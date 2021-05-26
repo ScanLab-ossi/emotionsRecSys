@@ -1,0 +1,51 @@
+body {
+    font: 11px sans-serif;
+  }
+  
+  
+  .axis line {
+    fill: none;
+    stroke: #000;
+    shape-rendering: crispEdges;
+  }
+  .axis path {
+    fill: none;
+    display: none;
+    stroke: white;
+    shape-rendering: crispEdges;
+  }
+  .dot {
+    stroke: #000;
+  }
+  
+  div.tooltip-donut {
+       position: absolute;
+       text-align: center;
+       padding: .5rem;
+       background: #FFFFFF;
+       color: #313639;
+       border: 1px solid #313639;
+       border-radius: 8px;
+       pointer-events: none;
+       font-size: 0.7rem;
+       font-weight: bold;
+  }
+  #vis, #clickedtable{
+      background-color: lightblue;
+      margin-top: 20px;
+  }
+  #movieImg{
+      width: 150px;
+      height: 200px;
+      margin: 20px;
+  }
+  #clickedtable{
+      display: none;
+  }
+  #movieDetails{
+      font-weight: bold;
+      margin: 20px;
+  }
+  .axis text{
+    display: none;
+  }
