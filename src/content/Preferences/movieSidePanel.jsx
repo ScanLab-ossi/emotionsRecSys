@@ -30,8 +30,10 @@ class MovieSidePanel extends Component {
 											size={24}
 											activeColor="#ffd700"/>
 									</div>
-
-									
+									{/*continue here buttons for movie list*/}
+									<div>
+										<p>hi</p>
+									</div>								
 								</li>
 							))}
 						</ol>

@@ -10,6 +10,8 @@ import {Card, CardBody, CardImg, CardText, CardTitle} from "reactstrap";
 import ProgressBarComponent from "./progressBarComponent";
 import {API, Movie} from "./constants";
 import MovieSidePanel from "./Preferences/movieSidePanel";
+import MovieGraph from "./Preferences/movieGraph";
+
 
 class Moviecard extends Component {
     constructor(props) {
@@ -130,20 +132,30 @@ class Moviecard extends Component {
 
         return (
             <div>
+                 {/* Progress bar component */ }
                 <ProgressBarComponent percentComplete={75} />
                 <br/>
+                {/* Title of the page */ }
                 <div> 
                 <h3> Recommendations </h3>
                 <p>
                     The system recommends the following movies based on your preferences. 
                     Please click on each movie, read the info, and perform the actions at
                     the bottom of the info page.
-              </p>
+                </p>
                 </div>
+                
 
                 <div className="row padding">
-                
-                    <MovieSidePanel movieList={this.state.movies.slice(0, 10)} handler={this.handleHover  }/>
+
+                     {/* Recommended moview - List */ }
+                    <MovieSidePanel panelTitle="Recommened movies for you" movieList={this.state.movies.slice(0, 10)} handler={this.handleHover  }/>
+                   
+                    {/* Recommended moview - Graph 
+                    <MovieGraph />*/ }
+                    
+
+                    {/* Final recommendation - instructions */ }
                     <div className="col-sm-4">
                             <Card body inverse style={{ backgroundColor: '#8fd6f2', borderColor: '#333', width:"100%",
                                 height:"100%"}}>                  
@@ -159,7 +171,7 @@ class Moviecard extends Component {
                         </div>
 
 
-
+                    {/* Movie details - shown when mouse hover on a */ }
                     {this.state.setIsShown && (this.state.activeMovie!= null) ? (
                         <div className="col-sm-4">
                             <Card body inverse style={{ backgroundColor: '#8fd6f2', borderColor: '#333', width:"100%",
@@ -190,14 +202,16 @@ class Moviecard extends Component {
                     
                 </div>
 
-
+                {/* "next" button    */ }
                 <div align="right" className="padding">
                     <Link to="/survey">
                         <button id="register" type="button" className="btn btn-sm btn-primary"
                                 onClick="window.location.href='/'">Next
                         </button>
-                    </Link>
+                    </Link>                    
                 </div>
+             
+               
             </div>
         );
     }
