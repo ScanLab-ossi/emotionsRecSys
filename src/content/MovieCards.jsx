@@ -148,11 +148,11 @@ class Moviecard extends Component {
 
                 <div className="row padding">
 
-                     {/* Recommended moview - List */ }
+                     {/* Recommended moview - List 
                     <MovieSidePanel panelTitle="Recommened movies for you" movieList={this.state.movies.slice(0, 10)} handler={this.handleHover  }/>
-                   
-                    {/* Recommended moview - Graph 
-                    <MovieGraph />*/ }
+                   */ }
+                    {/* Recommended moview - Graph */ }
+                    <MovieGraph />
                     
 
                     {/* Final recommendation - instructions */ }
