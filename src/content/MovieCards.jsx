@@ -29,9 +29,8 @@ class Moviecard extends Component {
             isShown: '',
             setIsShown: false,
             activeMovie: null,
-            m1:"",m2:"",m3:"",m4:"",m5:"",m6:"",m7:"",m8:"",m9:"",m10:"",
-            moviePics : [],
-            optionsForGraph : {}
+            optionsForGraph : {},
+            seriesForGraph: []
       
         };
         this.handleHover = this.handleHover.bind(this);
@@ -50,6 +49,18 @@ class Moviecard extends Component {
 				});
                 this.setState({
                      movies: response.data ,
+
+                     seriesForGraph: [{name: String(movie_map.map(currentMovie => (currentMovie.movie.title)).slice(0, 1)),data: [[-10, 0],]},
+                     {name: String(movie_map.map(currentMovie => (currentMovie.movie.title)).slice(1, 2)),data: [[5, 13],]},
+                     {name: String(movie_map.map(currentMovie => (currentMovie.movie.title)).slice(2, 3)),data: [[15, 12],]},
+                     {name: String(movie_map.map(currentMovie => (currentMovie.movie.title)).slice(3, 4)),data: [[-17, 17],]},
+                     {name: String(movie_map.map(currentMovie => (currentMovie.movie.title)).slice(4, 5)),data: [[12, 12],]},
+                     {name: String(movie_map.map(currentMovie => (currentMovie.movie.title)).slice(5, 6)),data: [[-12, 5],]},
+                     {name: String(movie_map.map(currentMovie => (currentMovie.movie.title)).slice(6, 7)),data: [[4, 4],]},
+                     {name: String(movie_map.map(currentMovie => (currentMovie.movie.title)).slice(7, 8)),data: [[12, 6],]},
+                     {name: String(movie_map.map(currentMovie => (currentMovie.movie.title)).slice(8, 9)),data: [[7, 8],]},
+                     {name: String(movie_map.map(currentMovie => (currentMovie.movie.title)).slice(9, 10)),data: [[-8, 0],]}
+                    ],
                     
                     optionsForGraph: {
                         chart: {
@@ -80,7 +91,7 @@ class Moviecard extends Component {
                         },
                         fill: {
                           type: 'image',
-                          opacity: 10,
+                          opacity: 1,
                           image: {
                             src: [String(movie_map.map(currentMovie => (currentMovie.movie.poster)).slice(0, 1)),
                                   String(movie_map.map(currentMovie => (currentMovie.movie.poster)).slice(1, 2)),
@@ -96,6 +107,7 @@ class Moviecard extends Component {
                             height: 40
                           }
                         },
+                        
                       }                 
                     });
                     
@@ -216,11 +228,11 @@ class Moviecard extends Component {
                     <MovieSidePanel panelTitle="Recommened movies for you" movieList={this.state.movies.slice(0, 10)} handler={this.handleHover  }/>
                    */ }
                     {/* Recommended moview - Graph     */ }             
-                    <MovieGraph options = {this.state.optionsForGraph} />
+                    <MovieGraph options = {this.state.optionsForGraph} series={this.state.seriesForGraph}/>
 
                     
 
-                    {/* Final recommendation - instructions 
+                    {/* Final recommendation - instructions */ }
                     <div className="col-sm-4">
                             <Card body inverse style={{ backgroundColor: '#8fd6f2', borderColor: '#333', width:"100%",
                                 height:"100%"}}>                  
@@ -233,7 +245,7 @@ class Moviecard extends Component {
                                     <p style={{color: 'black'}}>5. Click on the 'Next' button to go to the next step. This button won't be activated till you <b>complete steps 2-4</b>.</p>
                                 </CardBody>
                             </Card>
-                        </div>*/ }
+                        </div>
 
 
                     {/* Movie details - shown when mouse hover on a */ }

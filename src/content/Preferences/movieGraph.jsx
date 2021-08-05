@@ -15,12 +15,8 @@ class MovieGraph extends Component {
         moviePics:[],
         visited: [],
              
-        series: [{name: 'Movie1',data: [[-10, 0],]},{name: 'Movie2',data: [[5, 13],]},{name: 'Movie3',data: [[15, 12],]},{name: 'Movie4',data: [[-17, 17],]},
-        {name: 'Movie5',data: [[12, 12],]},{name: 'Movie6',data: [[-12, 5],]},{name: 'Movie7',data: [[4, 4],]},{name: 'Movie8',data: [[12, 6],]},
-        {name: 'Movie9',data: [[7, 8],]},{name: 'Movie10',data: [[-8, 0],]}
-        ],
-        
-        // (options from props)
+        // series from props
+        // options from props
       };
     }
 
@@ -137,7 +133,7 @@ class MovieGraph extends Component {
  
         return (
             <div id="chart">
-                <ReactApexChart options={this.props.options}  series={this.state.series} type="scatter" height={500} width={500}/>
+                <ReactApexChart options={this.props.options}  series={this.props.series} type="scatter" height={450} width={600}/>
                
             </div>
         );
