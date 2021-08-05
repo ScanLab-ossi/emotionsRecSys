@@ -50,41 +50,53 @@ class Moviecard extends Component {
                 this.setState({
                      movies: response.data ,
 
-                     seriesForGraph: [{name: String(movie_map.map(currentMovie => (currentMovie.movie.title)).slice(0, 1)),data: [[-10, 0],]},
-                     {name: String(movie_map.map(currentMovie => (currentMovie.movie.title)).slice(1, 2)),data: [[5, 13],]},
-                     {name: String(movie_map.map(currentMovie => (currentMovie.movie.title)).slice(2, 3)),data: [[15, 12],]},
-                     {name: String(movie_map.map(currentMovie => (currentMovie.movie.title)).slice(3, 4)),data: [[-17, 17],]},
-                     {name: String(movie_map.map(currentMovie => (currentMovie.movie.title)).slice(4, 5)),data: [[12, 12],]},
-                     {name: String(movie_map.map(currentMovie => (currentMovie.movie.title)).slice(5, 6)),data: [[-12, 5],]},
+                     seriesForGraph: [{name: String(movie_map.map(currentMovie => (currentMovie.movie.title)).slice(0, 1)),data: [[-7, 0],]},
+                     {name: String(movie_map.map(currentMovie => (currentMovie.movie.title)).slice(1, 2)),data: [[5, 9],]},
+                     {name: String(movie_map.map(currentMovie => (currentMovie.movie.title)).slice(2, 3)),data: [[7, 5],]},
+                     {name: String(movie_map.map(currentMovie => (currentMovie.movie.title)).slice(3, 4)),data: [[-4, -6],]},
+                     {name: String(movie_map.map(currentMovie => (currentMovie.movie.title)).slice(4, 5)),data: [[5, -5],]},
+                     {name: String(movie_map.map(currentMovie => (currentMovie.movie.title)).slice(5, 6)),data: [[-7, 5],]},
                      {name: String(movie_map.map(currentMovie => (currentMovie.movie.title)).slice(6, 7)),data: [[4, 4],]},
-                     {name: String(movie_map.map(currentMovie => (currentMovie.movie.title)).slice(7, 8)),data: [[12, 6],]},
-                     {name: String(movie_map.map(currentMovie => (currentMovie.movie.title)).slice(8, 9)),data: [[7, 8],]},
+                     {name: String(movie_map.map(currentMovie => (currentMovie.movie.title)).slice(7, 8)),data: [[2, 6],]},
+                     {name: String(movie_map.map(currentMovie => (currentMovie.movie.title)).slice(8, 9)),data: [[1, 8],]},
                      {name: String(movie_map.map(currentMovie => (currentMovie.movie.title)).slice(9, 10)),data: [[-8, 0],]}
                     ],
                     
                     optionsForGraph: {
                         chart: {
+
+                          events: {
+                            markerClick: function(event, chartContext, { seriesIndex, dataPointIndex, config}) {
+                                alert(event, chartContext, config);
+                                //this.handleHover(true, config);
+                            },
+                            dataPointMouseEnter: function(event, chartContext, config) {
+                                event.path[0].style.cursor = "pointer";
+                            }
+                            
+                          },
+
                           height: 500,
                           type: 'scatter',
                           animations: {
                             enabled: true,
                           },
                           zoom: {
-                            enabled: true,
+                            enabled: false,
                           },
                           toolbar: {
-                            show: false
+                            show: true
                           }
                         },
                         xaxis: {
                           tickAmount: 10,
-                          min: -20,
-                          max: 20
+                          min: -10,
+                          max: 10
                         },
                         yaxis: {
                           tickAmount: 10,
-                          min: -20,
-                          max: 20
+                          min: -10,
+                          max: 10
                         },
                         markers: {
                           size: 20
@@ -228,7 +240,7 @@ class Moviecard extends Component {
                     <MovieSidePanel panelTitle="Recommened movies for you" movieList={this.state.movies.slice(0, 10)} handler={this.handleHover  }/>
                    */ }
                     {/* Recommended moview - Graph     */ }             
-                    <MovieGraph options = {this.state.optionsForGraph} series={this.state.seriesForGraph}/>
+                    <MovieGraph options = {this.state.optionsForGraph} series={this.state.seriesForGraph} handler={this.handleHover}/>
 
                     
 
