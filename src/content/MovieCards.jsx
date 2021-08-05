@@ -29,18 +29,80 @@ class Moviecard extends Component {
             isShown: '',
             setIsShown: false,
             activeMovie: null,
+            m1:"",m2:"",m3:"",m4:"",m5:"",m6:"",m7:"",m8:"",m9:"",m10:"",
+            moviePics : [],
+            optionsForGraph : {}
+      
         };
         this.handleHover = this.handleHover.bind(this);
     }
   
     componentDidMount() {
+        let movie_map = [];
         axios
             .get(API)
             .then(response => {
-                this.setState({ movies: response.data });
+                response.data.map(movie => {
+					movie_map.push({
+						"movie": movie,
+					});
+                                    
+				});
+                this.setState({
+                     movies: response.data ,
+                    
+                    optionsForGraph: {
+                        chart: {
+                          height: 500,
+                          type: 'scatter',
+                          animations: {
+                            enabled: true,
+                          },
+                          zoom: {
+                            enabled: true,
+                          },
+                          toolbar: {
+                            show: false
+                          }
+                        },
+                        xaxis: {
+                          tickAmount: 10,
+                          min: -20,
+                          max: 20
+                        },
+                        yaxis: {
+                          tickAmount: 10,
+                          min: -20,
+                          max: 20
+                        },
+                        markers: {
+                          size: 20
+                        },
+                        fill: {
+                          type: 'image',
+                          opacity: 10,
+                          image: {
+                            src: [String(movie_map.map(currentMovie => (currentMovie.movie.poster)).slice(0, 1)),
+                                  String(movie_map.map(currentMovie => (currentMovie.movie.poster)).slice(1, 2)),
+                                  String(movie_map.map(currentMovie => (currentMovie.movie.poster)).slice(2, 3)),
+                                  String(movie_map.map(currentMovie => (currentMovie.movie.poster)).slice(3, 4)),
+                                  String(movie_map.map(currentMovie => (currentMovie.movie.poster)).slice(4, 5)),
+                                  String(movie_map.map(currentMovie => (currentMovie.movie.poster)).slice(5, 6)),
+                                  String(movie_map.map(currentMovie => (currentMovie.movie.poster)).slice(6, 7)),
+                                  String(movie_map.map(currentMovie => (currentMovie.movie.poster)).slice(7, 8)),
+                                  String(movie_map.map(currentMovie => (currentMovie.movie.poster)).slice(8, 9)),
+                                  String(movie_map.map(currentMovie => (currentMovie.movie.poster)).slice(9, 10)) ],
+                            width: 40,
+                            height: 40
+                          }
+                        },
+                      }                 
+                    });
+                    
             })
             .catch(error => {
                 console.log(error);
+                
             });
     }
 
@@ -74,6 +136,7 @@ class Moviecard extends Component {
             .get(API + this.state.mId)
             .then(response => {
                 this.setState({ movies: response.data });
+
             })
             .catch(error => {
                 console.log(error);
@@ -135,6 +198,7 @@ class Moviecard extends Component {
                  {/* Progress bar component */ }
                 <ProgressBarComponent percentComplete={75} />
                 <br/>
+
                 {/* Title of the page */ }
                 <div> 
                 <h3> Recommendations </h3>
@@ -151,11 +215,12 @@ class Moviecard extends Component {
                      {/* Recommended moview - List 
                     <MovieSidePanel panelTitle="Recommened movies for you" movieList={this.state.movies.slice(0, 10)} handler={this.handleHover  }/>
                    */ }
-                    {/* Recommended moview - Graph */ }
-                    <MovieGraph />
+                    {/* Recommended moview - Graph     */ }             
+                    <MovieGraph options = {this.state.optionsForGraph} />
+
                     
 
-                    {/* Final recommendation - instructions */ }
+                    {/* Final recommendation - instructions 
                     <div className="col-sm-4">
                             <Card body inverse style={{ backgroundColor: '#8fd6f2', borderColor: '#333', width:"100%",
                                 height:"100%"}}>                  
@@ -168,7 +233,7 @@ class Moviecard extends Component {
                                     <p style={{color: 'black'}}>5. Click on the 'Next' button to go to the next step. This button won't be activated till you <b>complete steps 2-4</b>.</p>
                                 </CardBody>
                             </Card>
-                        </div>
+                        </div>*/ }
 
 
                     {/* Movie details - shown when mouse hover on a */ }
@@ -210,6 +275,8 @@ class Moviecard extends Component {
                         </button>
                     </Link>                    
                 </div>
+
+                
              
                
             </div>
