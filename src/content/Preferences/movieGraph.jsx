@@ -127,7 +127,7 @@ class MovieGraph extends Component {
  
         return (
             <div id="chart">
-                <ReactApexChart options={this.props.options}  series={this.props.series} type="scatter" height={500} width={500}/>
+                <ReactApexChart options={this.props.options}  series={this.props.series} type="scatter" height={600} width={500}/>
       
             </div>
         );

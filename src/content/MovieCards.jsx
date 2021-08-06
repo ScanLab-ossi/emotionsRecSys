@@ -52,7 +52,7 @@ class Moviecard extends Component {
                 this.setState({
                      movies: response.data ,
 
-                     seriesForGraph: [{name: String(movie_map.map(currentMovie => (currentMovie.movie)).slice(0, 1)),data: [[-7, 0],]},
+                     seriesForGraph: [{name: String(movie_map.map(currentMovie => (currentMovie.movie.title)).slice(0, 1)),data: [[-7,-5],]},
                      {name: String(movie_map.map(currentMovie => (currentMovie.movie.title)).slice(1, 2)),data: [[5, 9],]},
                      {name: String(movie_map.map(currentMovie => (currentMovie.movie.title)).slice(2, 3)),data: [[7, 5],]},
                      {name: String(movie_map.map(currentMovie => (currentMovie.movie.title)).slice(3, 4)),data: [[-4, -6],]},
@@ -261,14 +261,14 @@ class Moviecard extends Component {
                      {/* Recommended moview - List 
                     <MovieSidePanel panelTitle="Recommened movies for you" movieList={this.state.movies.slice(0, 10)} handler={this.handleHover  }/>
                    */ }
-                    {/* Recommended moview - Graph     */ }             
+                    {/* Recommended moview - Graph    */ }              
                     <MovieGraph options = {this.state.optionsForGraph} series={this.state.seriesForGraph} handler={this.handleHover}/>
 
                     
 
                     {/* Final recommendation - instructions */ }
                     <div className="col-sm-4">
-                            <Card body inverse style={{ backgroundColor: '#8fd6f2', borderColor: '#333', width:400,
+                            <Card body inverse style={{ backgroundColor: '#8fd6f2', borderColor: '#333', width:'100%',
                                 height:500}}>                  
                                 <CardBody style={{maxHeight: '300px' }}>
                                     <h3 style={{color: 'black'}}>Final Recommendation</h3>
@@ -313,7 +313,7 @@ class Moviecard extends Component {
                     
                 </div>
 
-                {/* "next" button    
+                {/* "next" button  */ }  
                 <div align="right" className="padding">
                     <Link to="/survey">
                         <button id="register" type="button" className="btn btn-sm btn-primary"
@@ -321,7 +321,7 @@ class Moviecard extends Component {
                         </button>
                     </Link>                    
                 </div>
-*/ }
+
                 
              
                
