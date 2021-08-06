@@ -29,6 +29,7 @@ class Moviecard extends Component {
             isShown: '',
             setIsShown: false,
             activeMovie: null,
+            activeMovieName: null,
             optionsForGraph : {},
             seriesForGraph: []
       
@@ -38,6 +39,7 @@ class Moviecard extends Component {
   
     componentDidMount() {
         let movie_map = [];
+  
         axios
             .get(API)
             .then(response => {
@@ -50,7 +52,7 @@ class Moviecard extends Component {
                 this.setState({
                      movies: response.data ,
 
-                     seriesForGraph: [{name: String(movie_map.map(currentMovie => (currentMovie.movie.title)).slice(0, 1)),data: [[-7, 0],]},
+                     seriesForGraph: [{name: String(movie_map.map(currentMovie => (currentMovie.movie)).slice(0, 1)),data: [[-7, 0],]},
                      {name: String(movie_map.map(currentMovie => (currentMovie.movie.title)).slice(1, 2)),data: [[5, 9],]},
                      {name: String(movie_map.map(currentMovie => (currentMovie.movie.title)).slice(2, 3)),data: [[7, 5],]},
                      {name: String(movie_map.map(currentMovie => (currentMovie.movie.title)).slice(3, 4)),data: [[-4, -6],]},
@@ -66,12 +68,22 @@ class Moviecard extends Component {
                         chart: {
 
                           events: {
-                            markerClick: function(event, chartContext, { seriesIndex, dataPointIndex, config}) {
-                                alert(event, chartContext, config);
-                                //this.handleHover(true, config);
+                            markerClick: (event, chartContext, config)=> {
+                                
+                                let selectedMovieName = config.w.globals.seriesNames[config.seriesIndex] 
+                                // set state "current movie name" by ^
+                                this.setState({ activeMovieName: selectedMovieName});
+                                console.log(this.state.activeMovieName);
+                                // call function that returns movie by name
+                                console.log(this.state.movies);
+                                let thisMovie = this.state.movies.find(m => m.title === selectedMovieName );
+                                // then call this.handlehover
+                                this.handleHover(true,thisMovie);
+                                
                             },
                             dataPointMouseEnter: function(event, chartContext, config) {
                                 event.path[0].style.cursor = "pointer";
+                                
                             }
                             
                           },
@@ -99,7 +111,9 @@ class Moviecard extends Component {
                           max: 10
                         },
                         markers: {
-                          size: 20
+                          size: 20,
+                         
+                          
                         },
                         fill: {
                           type: 'image',
@@ -129,6 +143,14 @@ class Moviecard extends Component {
                 
             });
     }
+
+    handleHover(isShown, activeMovie){
+        this.setState(prevState => ({
+            setIsShown: isShown,
+            activeMovie: activeMovie,
+            isHovered: !prevState.isHovered
+        }));
+    };
 
     movieList() {
         return this.state.movies.map(currentmovie => {
@@ -246,8 +268,8 @@ class Moviecard extends Component {
 
                     {/* Final recommendation - instructions */ }
                     <div className="col-sm-4">
-                            <Card body inverse style={{ backgroundColor: '#8fd6f2', borderColor: '#333', width:"100%",
-                                height:"100%"}}>                  
+                            <Card body inverse style={{ backgroundColor: '#8fd6f2', borderColor: '#333', width:400,
+                                height:500}}>                  
                                 <CardBody style={{maxHeight: '300px' }}>
                                     <h3 style={{color: 'black'}}>Final Recommendation</h3>
                                     <p style={{color: 'black'}}>1. Click on the Tab to read more information about the movie.</p>
@@ -263,13 +285,13 @@ class Moviecard extends Component {
                     {/* Movie details - shown when mouse hover on a */ }
                     {this.state.setIsShown && (this.state.activeMovie!= null) ? (
                         <div className="col-sm-4">
-                            <Card body inverse style={{ backgroundColor: '#8fd6f2', borderColor: '#333', width:"100%",
-                                height:"100%"}}>
+                            <Card body inverse style={{ backgroundColor: '#8fd6f2', borderColor: '#333', width:400,
+                                height:500}}>
                                     <CardTitle style={{fontWeight: 'bold', fontSize: '1.2em', color: 'black'}}>
                                         {this.state.activeMovie.title} ( {this.state.activeMovie.year} )
                                     </CardTitle>
                                     <CardImg top src={this.state.activeMovie.poster} alt="Card image cap"
-                                            style={{ maxHeight: '200px', width:'200px', height:'auto'}} />
+                                            style={{ maxHeight: '150px', width:'150px', height:'auto'}} />
                                     <CardBody style={{maxHeight: '300px'}}>
                                     <CardText style={{color: 'black'}}>
                                         <b>Overview</b>
@@ -291,7 +313,7 @@ class Moviecard extends Component {
                     
                 </div>
 
-                {/* "next" button    */ }
+                {/* "next" button    
                 <div align="right" className="padding">
                     <Link to="/survey">
                         <button id="register" type="button" className="btn btn-sm btn-primary"
@@ -299,7 +321,7 @@ class Moviecard extends Component {
                         </button>
                     </Link>                    
                 </div>
-
+*/ }
                 
              
                

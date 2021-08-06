@@ -123,18 +123,12 @@ class MovieGraph extends Component {
 		return randomMovies;
 	}
 
-   
-
-
-
-    
-
     render() {
  
         return (
             <div id="chart">
-                <ReactApexChart options={this.props.options}  series={this.props.series} type="scatter" height={450} width={600}/>
-               
+                <ReactApexChart options={this.props.options}  series={this.props.series} type="scatter" height={500} width={500}/>
+      
             </div>
         );
 
