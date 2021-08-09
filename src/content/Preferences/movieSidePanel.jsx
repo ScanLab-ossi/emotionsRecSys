@@ -2,6 +2,20 @@ import ReactStars from "react-rating-stars-component";
 import React, {Component} from "react";
 
 class MovieSidePanel extends Component {
+	constructor(props) {
+		super(props);
+	
+		this.state = {
+		 
+		  selected: false
+		};
+	  }
+	
+	onMouseEnter = () => {
+		// change to pointer
+	};
+
+	
 
 	render() {
 		const ratingChanged = (newRating) => {
@@ -15,25 +29,16 @@ class MovieSidePanel extends Component {
                                 align-items-center">
 							<strong>{this.props.panelTitle}</strong>
 						</li>
-						<ol className="list-group">
+						<ol className="list-group" >
 							{this.props.movieList.map((movie) => (
-								<li key={movie.movie_id}
+								<li key={movie.movie_id } 
+									style={{cursor: 'pointer'}}
 									className="list-group-item d-flex justify-content-between align-items-center"
-									onMouseEnter={() => this.props.handler(true, movie)}
-									onMouseLeave={() => this.props.handler(false, null)}
+									onClick={() => this.props.handler(true, movie)}									
 								>
+						
 									<b> {movie.title} </b>
-									<div className="rating">
-										<ReactStars
-											count={5}
-											onChange={ratingChanged}
-											size={24}
-											activeColor="#ffd700"/>
-									</div>
-									{/*continue here buttons for movie list*/}
-									<div>
-										<p>hi</p>
-									</div>								
+																
 								</li>
 							))}
 						</ol>

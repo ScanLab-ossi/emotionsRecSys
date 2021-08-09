@@ -18,6 +18,7 @@ class Moviecard extends Component {
         super(props);
         this.onChangeMovieId = this.onChangeMovieId.bind(this);
         this.onSubmit = this.onSubmit.bind(this);
+        this.handleHover = this.handleHover.bind(this);
 
         this.state = {
             movies: [],
@@ -34,7 +35,7 @@ class Moviecard extends Component {
             seriesForGraph: []
       
         };
-        this.handleHover = this.handleHover.bind(this);
+      
     }
   
     componentDidMount() {
@@ -261,16 +262,16 @@ class Moviecard extends Component {
                      {/* Recommended moview - List 
                     <MovieSidePanel panelTitle="Recommened movies for you" movieList={this.state.movies.slice(0, 10)} handler={this.handleHover  }/>
                    */ }
-                    {/* Recommended moview - Graph    */ }              
+                    {/* Recommended moview - Graph       */ }           
                     <MovieGraph options = {this.state.optionsForGraph} series={this.state.seriesForGraph} handler={this.handleHover}/>
 
                     
 
                     {/* Final recommendation - instructions */ }
                     <div className="col-sm-4">
-                            <Card body inverse style={{ backgroundColor: '#8fd6f2', borderColor: '#333', width:'100%',
-                                height:500}}>                  
-                                <CardBody style={{maxHeight: '300px' }}>
+                            <Card body inverse style={{ backgroundColor: '#8fd6f2', borderColor: '#333', maxWidth: '150',
+                                height:550}}>                  
+                                <CardBody style={{maxHeight: '300px' ,maxWidth: '150'}}>
                                     <h3 style={{color: 'black'}}>Final Recommendation</h3>
                                     <p style={{color: 'black'}}>1. Click on the Tab to read more information about the movie.</p>
                                     <p style={{color: 'black'}}>2. Click on the check or cross icon for each movie to indicate if you <b>know</b> or <b>don't know</b> the movie.</p>
@@ -285,8 +286,8 @@ class Moviecard extends Component {
                     {/* Movie details - shown when mouse hover on a */ }
                     {this.state.setIsShown && (this.state.activeMovie!= null) ? (
                         <div className="col-sm-4">
-                            <Card body inverse style={{ backgroundColor: '#8fd6f2', borderColor: '#333', width:400,
-                                height:500}}>
+                            <Card body inverse style={{ backgroundColor: '#8fd6f2', borderColor: '#333', width:'100%',
+                                height:550}}>
                                     <CardTitle style={{fontWeight: 'bold', fontSize: '1.2em', color: 'black'}}>
                                         {this.state.activeMovie.title} ( {this.state.activeMovie.year} )
                                     </CardTitle>
@@ -305,6 +306,25 @@ class Moviecard extends Component {
                                     <CardText style={{color: 'black'}}>
                                         <b>Stars: </b> {this.state.activeMovie.cast.slice(0, 50)}
                                     </CardText>
+
+                                    {/*stars*/}
+                                    <div className="rating" >
+										<ReactStars
+											count={5}
+											onChange={ratingChanged}
+											size={24}
+											activeColor="#ffd700"
+                                            />
+
+									</div>
+                                        {/* TODO: Margins!*/ }
+                                        <button>Like Best</button>
+                                        <button><img src="check.png" width="12px" height="12px"></img></button>
+                                        <button><img src="cross .png" width="12px" height="12px"></img></button>
+								
+                                 
+							
+                              
                                 </CardBody>
                             </Card>
                         </div>
