@@ -259,16 +259,8 @@ class Moviecard extends Component {
 
                 <div className="row padding">
 
-                     {/* Recommended moview - List 
-                    <MovieSidePanel panelTitle="Recommened movies for you" movieList={this.state.movies.slice(0, 10)} handler={this.handleHover  }/>
-                   */ }
-                    {/* Recommended moview - Graph       */ }           
-                    <MovieGraph options = {this.state.optionsForGraph} series={this.state.seriesForGraph} handler={this.handleHover}/>
-
-                    
-
-                    {/* Final recommendation - instructions */ }
-                    <div className="col-sm-4">
+                     {/* Final recommendation - instructions */ }
+                     <div className="col-sm-4">
                             <Card body inverse style={{ backgroundColor: '#8fd6f2', borderColor: '#333', maxWidth: '150',
                                 height:550}}>                  
                                 <CardBody style={{maxHeight: '300px' ,maxWidth: '150'}}>
@@ -282,6 +274,13 @@ class Moviecard extends Component {
                             </Card>
                         </div>
 
+
+                     {/* Recommended moview - List  */ }
+                    <MovieSidePanel panelTitle="Recommened movies for you" movieList={this.state.movies.slice(0, 10)} handler={this.handleHover  }/>
+                  
+                    {/* Recommended moview - Graph    
+                    <MovieGraph options = {this.state.optionsForGraph} series={this.state.seriesForGraph} handler={this.handleHover}/>
+  */ } 
 
                     {/* Movie details - shown when mouse hover on a */ }
                     {this.state.setIsShown && (this.state.activeMovie!= null) ? (

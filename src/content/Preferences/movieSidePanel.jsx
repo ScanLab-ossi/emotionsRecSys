@@ -11,9 +11,7 @@ class MovieSidePanel extends Component {
 		};
 	  }
 	
-	onMouseEnter = () => {
-		// change to pointer
-	};
+
 
 	
 
@@ -22,7 +20,10 @@ class MovieSidePanel extends Component {
 			console.log(newRating);
 		};
 		return (
+			
+                    
 			<div className="col-sm-4">
+				
 				<ul className="list-group">
 					<form onSubmit={this.handleSubmit}>
 						<li className="list-group-item list-group-item-dark d-flex justify-content-between
@@ -30,11 +31,16 @@ class MovieSidePanel extends Component {
 							<strong>{this.props.panelTitle}</strong>
 						</li>
 						<ol className="list-group" >
+							
 							{this.props.movieList.map((movie) => (
+
 								<li key={movie.movie_id } 
 									style={{cursor: 'pointer'}}
 									className="list-group-item d-flex justify-content-between align-items-center"
-									onClick={() => this.props.handler(true, movie)}									
+									onClick={() => this.props.handler(true, movie)}
+									onMouseLeave={() => this.props.handler(false, movie)}	
+									
+																	
 								>
 						
 									<b> {movie.title} </b>

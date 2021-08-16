@@ -3,6 +3,9 @@ import StarRatings from 'react-star-ratings';
 import Carousel from 'react-grid-carousel'
 import axios from "axios";
 import {API, Movie} from "../constants";
+import Modal from 'react-bootstrap/Modal';
+import { Link }  from "react-router-dom";
+import Button from 'react-bootstrap/Button';
 
 const carouselArrowRight = ({ isActive }) => (
 	<span className={"carouselArrowRight"} />
@@ -28,7 +31,10 @@ class MovieGrid extends Component {
 		super(props)
 		this.state = {
 			movies_: [],
-			visited: []
+			visited: [],
+			curMovieTitle: "",
+			showOverView: false,
+			showModal: false
 		}
 	}
 	componentDidMount() {
@@ -130,10 +136,51 @@ class MovieGrid extends Component {
 		return randomMovies;
 	}
 
+	handeClick = (currentMovietitle)=>{
+		this.setState({
+			showOverView: true,
+			curMovieTitle: currentMovietitle,
+			showModal: true
+		});
+		console.log(currentMovietitle)
+	}
+
+	closeModal = ()=>{
+		this.setState({
+			showModal: false
+		});
+	}
+
 	render() {
 		if (this.state.visited.length > 0) {
 			return (
 				<div>
+					<strong>Please click on a movie title to view movie overview</strong>
+					<div>
+					{this.state.showOverView ? (
+						  <div >
+								<Modal show={this.state.showModal} dialogClassName="modal-70w" >
+								<Modal.Header>
+									<Modal.Title>{this.state.curMovieTitle}</Modal.Title>
+								</Modal.Header>
+								<Modal.Body>
+									<strong>OverView:</strong>
+									<p>
+									overview
+									</p>
+								</Modal.Body>
+								<Modal.Footer>  
+							
+								<Button variant="secondary" onClick={this.closeModal}>
+									Exit
+								</Button>
+							
+								</Modal.Footer>
+								</Modal>
+					</div>):(<div></div>)}
+					</div>
+					
+					
 					<Carousel
 						responsiveLayout={responsive}
 						// arrowRight={customArrowRight}
@@ -143,7 +190,8 @@ class MovieGrid extends Component {
 								<div id={"TN_" + currentMovie.movie._id}
 									 key={currentMovie.movie._id} className="movieCardContainer">
 									<div  className="container"
-										 style={{backgroundImage: "url(" + currentMovie.movie.poster + ")"}}>
+										 style={{backgroundImage: "url(" + currentMovie.movie.poster + ")"}} >
+											
 										<div className={"overlay"}>
 											<div className="star-div">
 												<StarRatings
@@ -154,12 +202,17 @@ class MovieGrid extends Component {
 													starSpacing="1px"
 													changeRating={this.changeRating}
 													numberOfStars={5}
-													name={currentMovie.movie._id}/>
+													name={currentMovie.movie._id}
+													
+													/>
 											</div>
 										</div>
 									</div>
-									<div className="text">
+									<div className="text" style={{cursor: 'pointer'}}	
+									onClick={() => this.handeClick(currentMovie.movie.title)}
+									>								
 										{currentMovie.movie.title}
+										
 									</div>
 								</div>
 							</Carousel.Item>
