@@ -7,11 +7,13 @@ import 'intro.js/introjs.css';
 import {Steps} from "intro.js-react";
 import MovieGrid from "./movieGrid";
 import ProgressBarComponent from "../progressBarComponent";
+import Modal from 'react-bootstrap/Modal';
 
 class PrefPage extends Component {
     constructor(props) {
         super(props);
         this.handler = this.handler.bind(this);
+
 
         this.state = {
             stepsEnabled: true,
@@ -34,7 +36,7 @@ class PrefPage extends Component {
                     hintPosition: "middle-right"
                 }],
             count: 0
-        };
+        }; 
   }
 
   handler(){
@@ -45,7 +47,16 @@ class PrefPage extends Component {
         });
   }
   
-  render() {
+
+  componentDidMount(){
+    if (window.innerWidth < 700) {
+        alert('Please increase window size for proper visualization!');
+        }
+  }
+
+  
+  render() {  
+       
         const {
             stepsEnabled,
             steps,

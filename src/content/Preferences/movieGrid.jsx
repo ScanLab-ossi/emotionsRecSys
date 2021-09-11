@@ -6,6 +6,7 @@ import {API, Movie} from "../constants";
 import Modal from 'react-bootstrap/Modal';
 import { Link }  from "react-router-dom";
 import Button from 'react-bootstrap/Button';
+import { useState, useEffect } from 'react';
 
 const carouselArrowRight = ({ isActive }) => (
 	<span className={"carouselArrowRight"} />
@@ -172,7 +173,7 @@ class MovieGrid extends Component {
 								<Modal.Footer>  
 							
 								<Button variant="secondary" onClick={this.closeModal}>
-									Exit
+									OK
 								</Button>
 							
 								</Modal.Footer>
