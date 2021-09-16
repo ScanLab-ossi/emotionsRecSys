@@ -37,7 +37,9 @@ class Moviecard extends Component {
             activeMovie: null,
             activeMovieName: null,
             optionsForGraph : {},
-            seriesForGraph: []
+            seriesForGraph: [],
+            currentX: 0,
+            currentY: 0
       
         };
       
@@ -56,8 +58,8 @@ class Moviecard extends Component {
                                     
 				});
                 this.setState({
-                    // loader state: change to off
-                     loaderActive: false,
+                    
+                     loaderActive: false,// loader state: change to off
                      movies: response.data ,
 
                      seriesForGraph: [{name: String(movie_map.map(currentMovie => (currentMovie.movie.title)).slice(0, 1)),data: [[-7,-5],]},
@@ -76,8 +78,14 @@ class Moviecard extends Component {
                         chart: {
 
                           events: {
+                              /*
                             markerClick: (event, chartContext, config)=> {
-                                
+     
+                            },*/
+
+                            dataPointMouseEnter: (event, chartContext, config)=> {
+                                event.path[0].style.cursor = "pointer";
+
                                 let selectedMovieName = config.w.globals.seriesNames[config.seriesIndex] 
                                 // set state "current movie name" by ^
                                 this.setState({ activeMovieName: selectedMovieName});
@@ -86,15 +94,11 @@ class Moviecard extends Component {
                                 console.log(this.state.movies);
                                 let thisMovie = this.state.movies.find(m => m.title === selectedMovieName );
                                 // then call this.handlehover
-                                this.handleHover(true,thisMovie);
-                                
-                            },
-                            dataPointMouseEnter: function(event, chartContext, config) {
-                                event.path[0].style.cursor = "pointer";
-                                
-                            }
-                            
+                                this.handleHover(true,thisMovie);          
+                            }                          
                           },
+
+                         
 
                           height: 500,
                           type: 'scatter',
@@ -111,12 +115,24 @@ class Moviecard extends Component {
                         xaxis: {
                           tickAmount: 10,
                           min: -10,
-                          max: 10
+                          max: 10,
+                          labels:{
+                              formatter: (v)=>{
+                                  this.setState({ currentX: v});
+                                  return v;
+                              }
+                          }
                         },
                         yaxis: {
                           tickAmount: 10,
                           min: -10,
-                          max: 10
+                          max: 10,
+                          labels:{
+                            formatter: (v)=>{
+                                this.setState({ currentY: v});
+                                return v;
+                            }
+                        }
                         },
                         markers: {
                           size: 20,
@@ -303,7 +319,11 @@ class Moviecard extends Component {
                                     </CardTitle>
                                     <CardImg top src={this.state.activeMovie.poster} alt="Card image cap"
                                             style={{ maxHeight: '150px', width:'150px', height:'auto'}} />
+
                                     <CardBody style={{maxHeight: '300px'}}>
+                                    <CardText style={{color: 'black'}}>
+                                        <b>Coordinates: ({this.state.currentX},{this.state.currentY})</b>
+                                    </CardText> 
                                     <CardText style={{color: 'black'}}>
                                         <b>Overview</b>
                                     </CardText>
