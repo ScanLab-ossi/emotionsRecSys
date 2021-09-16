@@ -44,7 +44,7 @@ class MovieSidePanel extends Component {
 									style={{cursor: 'pointer', background:this.state.liColor}}
 									className="list-group-item d-flex justify-content-between align-items-center"
 									onClick={() => this.props.handler(true, movie)}
-									onMouseLeave={() => this.props.handler(false, movie)}	
+									//onMouseLeave={() => this.props.handler(false, movie)}	
 
 
 									//TODO onMouseLeave={() =>  this.setState({	liColor: 'white'})}	

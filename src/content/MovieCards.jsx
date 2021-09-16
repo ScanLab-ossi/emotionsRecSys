@@ -8,9 +8,13 @@ import 'react-star-rating/dist/css/react-star-rating.min.css';
 import ReactStars from "react-rating-stars-component";
 import {Card, CardBody, CardImg, CardText, CardTitle} from "reactstrap";
 import ProgressBarComponent from "./progressBarComponent";
+import Loader from './loader';
 import {API, Movie} from "./constants";
 import MovieSidePanel from "./Preferences/movieSidePanel";
 import MovieGraph from "./Preferences/movieGraph";
+import { CircularProgressbar } from 'react-circular-progressbar';
+import 'react-circular-progressbar/dist/styles.css';
+
 
 
 class Moviecard extends Component {
@@ -21,6 +25,7 @@ class Moviecard extends Component {
         this.handleHover = this.handleHover.bind(this);
 
         this.state = {
+            loaderActive: true,
             movies: [],
             mId: "",
             rate: '',
@@ -51,6 +56,8 @@ class Moviecard extends Component {
                                     
 				});
                 this.setState({
+                    // loader state: change to off
+                     loaderActive: false,
                      movies: response.data ,
 
                      seriesForGraph: [{name: String(movie_map.map(currentMovie => (currentMovie.movie.title)).slice(0, 1)),data: [[-7,-5],]},
@@ -230,7 +237,7 @@ class Moviecard extends Component {
         return rate.length, rate2.length;
     }
 
-    render() {
+    render() {    
         const active = this.state.isActive ? "pulse animated" : "";
         const isEnabled = this.canBeSubmitted();
         const {rate} = this.state;
@@ -240,11 +247,14 @@ class Moviecard extends Component {
             console.log(newRating);
         };
 
+        if (this.state.loaderActive) return  <Loader />; // Conditional Rendering!
+
         return (
             <div>
                  {/* Progress bar component */ }
                 <ProgressBarComponent percentComplete={75} />
                 <br/>
+
 
                 {/* Title of the page */ }
                 <div> 
@@ -255,7 +265,6 @@ class Moviecard extends Component {
                     the bottom of the info page.
                 </p>
                 </div>
-                
 
                 <div className="row padding">
 
@@ -275,12 +284,14 @@ class Moviecard extends Component {
                         </div>
 
 
-                     {/* Recommended moview - List  */ }
+                     {/* Recommended moview - List  
                     <MovieSidePanel panelTitle="Recommened movies for you" movieList={this.state.movies.slice(0, 10)} handler={this.handleHover  }/>
-                  
-                    {/* Recommended moview - Graph    
+*/ }
+
+                   
+                    {/* Recommended moview - Graph     */ } 
                     <MovieGraph options = {this.state.optionsForGraph} series={this.state.seriesForGraph} handler={this.handleHover}/>
-  */ } 
+ 
 
                     {/* Movie details - shown when mouse hover on a */ }
                     {this.state.setIsShown && (this.state.activeMovie!= null) ? (
@@ -320,10 +331,7 @@ class Moviecard extends Component {
                                         <button>Like Best</button>
                                         <button><img src="check.png" width="12px" height="12px"></img></button>
                                         <button><img src="cross .png" width="12px" height="12px"></img></button>
-								
-                                 
-							
-                              
+
                                 </CardBody>
                             </Card>
                         </div>

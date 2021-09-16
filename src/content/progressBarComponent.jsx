@@ -3,6 +3,9 @@ import {ProgressBar, Step} from "react-step-progress-bar";
 
 
 class ProgressBarComponent extends Component{
+	constructor(props) {
+        super(props);
+	}
 
 	render() {
 		return (
