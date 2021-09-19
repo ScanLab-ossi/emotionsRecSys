@@ -274,11 +274,11 @@ class Moviecard extends Component {
 
                 {/* Title of the page */ }
                 <div> 
-                <h3> Recommendations </h3>
-                <p>
+                <h2  style={{textAlign: 'center'}}> Recommendations </h2>
+                <p  style={{textAlign: 'center'}}><b>
                     The system recommends the following movies based on your preferences. 
-                    Please click on each movie, read the info, and perform the actions at
-                    the bottom of the info page.
+                    Please click on each movie, read the info, and perform the actions below
+                    </b>
                 </p>
                 </div>
 
@@ -290,11 +290,10 @@ class Moviecard extends Component {
                                 height:550}}>                  
                                 <CardBody style={{maxHeight: '300px' ,maxWidth: '150'}}>
                                     <h3 style={{color: 'black'}}>Final Recommendation</h3>
-                                    <p style={{color: 'black'}}>1. Click on the Tab to read more information about the movie.</p>
+                                    &nbsp;&nbsp;&nbsp;
+                                    <p style={{color: 'black'}}>1. Hover over a movie to read more information about it.</p>
                                     <p style={{color: 'black'}}>2. Click on the check or cross icon for each movie to indicate if you <b>know</b> or <b>don't know</b> the movie.</p>
-                                    <p style={{color: 'black'}}>3. Among the ten presented movies, choosethe movie which you <b>like the best </b> by clicking on the 'like best' button.</p>
-                                    <p style={{color: 'black'}}>4. <b>Rate</b> all the ten movies. If you haven't seen the movie please rate based on the information given.</p>
-                                    <p style={{color: 'black'}}>5. Click on the 'Next' button to go to the next step. This button won't be activated till you <b>complete steps 2-4</b>.</p>
+                                    <p style={{color: 'black'}}>3. Click on the 'Next' button to go to the next step. This button won't be activated till you <b>complete step 2</b>.</p>
                                 </CardBody>
                             </Card>
                         </div>
@@ -328,7 +327,7 @@ class Moviecard extends Component {
                                         <b>Overview</b>
                                     </CardText>
                                     <CardText style={{color: 'black'}}>
-                                         {this.state.activeMovie.description} (description-check why doesn't work)
+                                         {this.state.activeMovie.description} (description)
                                     </CardText>
                                     <CardText style={{color: 'black'}}>
                                         <b>Director:</b> {this.state.activeMovie.director} <b> Writers:</b> {this.state.activeMovie.writer}
@@ -336,20 +335,12 @@ class Moviecard extends Component {
                                     <CardText style={{color: 'black'}}>
                                         <b>Stars: </b> {this.state.activeMovie.cast.slice(0, 50)}
                                     </CardText>
-
-                                    {/*stars*/}
-                                    <div className="rating" >
-										<ReactStars
-											count={5}
-											onChange={ratingChanged}
-											size={24}
-											activeColor="#ffd700"
-                                            />
-
-									</div>
-                                        {/* TODO: Margins!*/ }
-                                        <button>Like Best</button>
-                                        <button><img src="check.png" width="12px" height="12px"></img></button>
+                                    <CardText style={{color: 'blue'}}>
+                                        <b>tt (IMDB ID): </b> {this.state.activeMovie.imdb_id}
+                                    </CardText>
+                                        
+                                        <button ><img src="check.png" width="12px" height="12px"></img></button>
+                                        &nbsp;&nbsp;&nbsp;
                                         <button><img src="cross .png" width="12px" height="12px"></img></button>
 
                                 </CardBody>
@@ -362,7 +353,7 @@ class Moviecard extends Component {
 
                 {/* "next" button  */ }  
                 <div align="right" className="padding">
-                    <Link to="/survey">
+                    <Link to="/movies2">
                         <button id="register" type="button" className="btn btn-sm btn-primary"
                                 onClick="window.location.href='/'">Next
                         </button>

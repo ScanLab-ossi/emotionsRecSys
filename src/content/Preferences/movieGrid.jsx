@@ -156,7 +156,10 @@ class MovieGrid extends Component {
 		if (this.state.visited.length > 0) {
 			return (
 				<div>
-					<strong>Please click on a movie title to view movie overview</strong>
+					<h3  style={{textAlign: 'center'}}> Please click on a movie title to view movie overview </h3>
+					<h3 style={{textAlign: 'center'}}> Click on the arrows to view more movies </h3> 
+					&nbsp;&nbsp;&nbsp;
+					
 					<div>
 					{this.state.showOverView ? (
 						  <div >

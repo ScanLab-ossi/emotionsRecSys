@@ -4,6 +4,7 @@ import Welcome from './content/welcome';
 import Instructions from './content/Instructions';
 import Preferences from './content/Preferences/prefPage';
 import Movies from './content/MovieCards';
+import Movies2 from './content/movieCards2';
 import MovieInfo from './content/movieInfo';
 import Survey from "./content/survey";
 import Exit from './content/ExitPage';
@@ -28,6 +29,7 @@ class App extends Component {
                         <Route path="/inst" component={Instructions}/>
                         <Route path="/pref" component={Preferences}/>
                         <Route path="/movies" component={Movies}/>
+                        <Route path="/movies2" component={Movies2}/>
                         <Route path="/movieInfo" component={MovieInfo}/>
                         <Route path="/survey" component={Survey}/>
                         <Route path="/exit" component={Exit}/>
