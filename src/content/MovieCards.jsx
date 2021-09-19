@@ -23,6 +23,7 @@ class Moviecard extends Component {
         this.onChangeMovieId = this.onChangeMovieId.bind(this);
         this.onSubmit = this.onSubmit.bind(this);
         this.handleHover = this.handleHover.bind(this);
+        this.randomVisualization = this.randomVisualization.bind(this);
 
         this.state = {
             loaderActive: true,
@@ -39,7 +40,9 @@ class Moviecard extends Component {
             optionsForGraph : {},
             seriesForGraph: [],
             currentX: 0,
-            currentY: 0
+            currentY: 0,
+            graphVis: false,
+            listVis: false
       
         };
       
@@ -47,7 +50,7 @@ class Moviecard extends Component {
   
     componentDidMount() {
         let movie_map = [];
-  
+        
         axios
             .get(API)
             .then(response => {
@@ -57,6 +60,17 @@ class Moviecard extends Component {
 					});
                                     
 				});
+
+                // random visualization
+                let rand = this.randomVisualization(); 
+                if (rand==0){
+                    this.setState({ graphVis: true});
+                    console.log(this.state.graphVis);
+                } else {
+                    this.setState({ listVis: true})
+                    console.log(this.state.listVis);
+                }
+
                 this.setState({
                     
                      loaderActive: false,// loader state: change to off
@@ -253,6 +267,12 @@ class Moviecard extends Component {
         return rate.length, rate2.length;
     }
 
+    randomVisualization(){
+        let rand = Math.floor(Math.random()*2);
+        console.log(rand);
+        return rand;
+    }
+
     render() {    
         const active = this.state.isActive ? "pulse animated" : "";
         const isEnabled = this.canBeSubmitted();
@@ -298,15 +318,14 @@ class Moviecard extends Component {
                             </Card>
                         </div>
 
+                     {/* Recommended movies - Randomely graph or list */ }
+                    {this.state.listVis ? 
+                         <div  >   
+                     <MovieGraph options = {this.state.optionsForGraph} series={this.state.seriesForGraph} handler={this.handleHover}/>
+                       </div>
+                        : (  <MovieSidePanel panelTitle="Recommened movies for you" movieList={this.state.movies.slice(0, 10)} handler={this.handleHover  }/> )}
+                    
 
-                     {/* Recommended moview - List  
-                    <MovieSidePanel panelTitle="Recommened movies for you" movieList={this.state.movies.slice(0, 10)} handler={this.handleHover  }/>
-*/ }
-
-                   
-                    {/* Recommended moview - Graph     */ } 
-                    <MovieGraph options = {this.state.optionsForGraph} series={this.state.seriesForGraph} handler={this.handleHover}/>
- 
 
                     {/* Movie details - shown when mouse hover on a */ }
                     {this.state.setIsShown && (this.state.activeMovie!= null) ? (

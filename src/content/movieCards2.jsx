@@ -39,7 +39,9 @@ class Moviecard2 extends Component {
             optionsForGraph : {},
             seriesForGraph: [],
             currentX: 0,
-            currentY: 0
+            currentY: 0,
+            graphVis: false,
+            listVis: false
       
         };
       
@@ -57,6 +59,17 @@ class Moviecard2 extends Component {
 					});
                                     
 				});
+
+                // random visualization
+                let rand = this.randomVisualization(); 
+                if (rand==0){
+                    this.setState({ graphVis: true});
+                    console.log(this.state.graphVis);
+                } else {
+                    this.setState({ listVis: true})
+                    console.log(this.state.listVis);
+                }
+
                 this.setState({
                     
                      loaderActive: false,// loader state: change to off
@@ -253,6 +266,12 @@ class Moviecard2 extends Component {
         return rate.length, rate2.length;
     }
 
+    randomVisualization(){
+        let rand = Math.floor(Math.random()*2);
+        console.log(rand);
+        return rand;
+    }
+
     render() {    
         const active = this.state.isActive ? "pulse animated" : "";
         const isEnabled = this.canBeSubmitted();
@@ -300,14 +319,13 @@ class Moviecard2 extends Component {
                         </div>
 
 
-                     {/* Recommended moview - List  
-                    <MovieSidePanel panelTitle="Recommened movies for you" movieList={this.state.movies.slice(0, 10)} handler={this.handleHover  }/>
-*/ }
-
-                   
-                    {/* Recommended moview - Graph     */ } 
-                    <MovieGraph options = {this.state.optionsForGraph} series={this.state.seriesForGraph} handler={this.handleHover}/>
- 
+                       {/* Recommended movies - Randomely graph or list */ }
+                    {this.state.listVis ? 
+                         <div  >   
+                     <MovieGraph options = {this.state.optionsForGraph} series={this.state.seriesForGraph} handler={this.handleHover}/>
+                       </div>
+                        : (  <MovieSidePanel panelTitle="Recommened movies for you" movieList={this.state.movies.slice(0, 10)} handler={this.handleHover  }/> )}
+                    
 
                     {/* Movie details - shown when mouse hover on a */ }
                     {this.state.setIsShown && (this.state.activeMovie!= null) ? (
