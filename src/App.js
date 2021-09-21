@@ -7,6 +7,7 @@ import Movies from './content/MovieCards';
 import Movies2 from './content/movieCards2';
 import MovieInfo from './content/movieInfo';
 import Survey from "./content/survey";
+import SurveyNew from './content/surveyNew';
 import Exit from './content/ExitPage';
 import MoviesList from "./content/movies-list.component";
 import './App.css';
@@ -34,6 +35,7 @@ class App extends Component {
                         <Route path="/survey" component={Survey}/>
                         <Route path="/exit" component={Exit}/>
                         <Route path="/mern" component={MoviesList}/>
+                        <Route path="/surveyNew" component={SurveyNew}/>
                     </Switch>
 
                 </Router>
