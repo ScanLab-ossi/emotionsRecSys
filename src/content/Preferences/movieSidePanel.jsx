@@ -40,7 +40,7 @@ class MovieSidePanel extends Component {
 							
 							{this.props.movieList.map((movie) => (
 
-								<li key={movie.movie_id}  
+								<li key={movie.titleId}  
 									style={{cursor: 'pointer', background:this.state.liColor}}
 									className="list-group-item d-flex justify-content-between align-items-center"
 									onMouseOver={() => this.props.handler(true, movie)}
@@ -53,8 +53,8 @@ class MovieSidePanel extends Component {
 																	
 								>
 						
-									<b> {movie.title} </b>
-									<img src={movie.poster}  alt="..." height="40px" width="40px" />
+									<b> {movie.name} </b>
+									{/*<img src={movie.poster}  alt="..." height="40px" width="40px" />*/}
 
 															
 								</li>

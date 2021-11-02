@@ -16,6 +16,7 @@ const Movie = props => (
     <td>{props.movie.writer}</td>
     <td>{props.movie.description}</td> 
     <td>{props.movie.cast}</td>
+    <td>{props.movie.signature}</td> 
     <td>
       <img src={props.movie.poster} alt={props.movie.title} width="100" />
     </td>
@@ -39,8 +40,10 @@ export default class MoviesList extends Component {
     var API = "";
     if (process.env.NODE_ENV === "production") {
       API = "https://movie-mern.herokuapp.com/api/movies/";
+      console.log("API: herokuapp")
     } else {
       API = "http://localhost:5000/api/movies/";
+      console.log("API: mongo DB")
     }
     axios
       .get(API)
@@ -94,8 +97,10 @@ export default class MoviesList extends Component {
     var API = "";
     if (process.env.NODE_ENV === "production") {
       API = "https://movie-mern.herokuapp.com/api/movies/";
+      console.log("API: herokuapp")
     } else {
       API = "http://localhost:5000/api/movies/";
+      console.log("API: mongo DB")
     }
     axios
       .get(API + this.state.mId)

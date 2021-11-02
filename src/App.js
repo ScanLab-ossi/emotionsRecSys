@@ -1,4 +1,4 @@
-import React, {Component} from 'react';
+import React from 'react';
 import {BrowserRouter as Router, Route, Switch} from "react-router-dom";
 import Welcome from './content/welcome';
 import Instructions from './content/Instructions';
@@ -12,36 +12,37 @@ import Exit from './content/ExitPage';
 import MoviesList from "./content/movies-list.component";
 import './App.css';
 
-class App extends Component {
 
-    render() {
-        return (
-            <div>
-                <div className="App">
+function App() {
+   
 
-                    <nav className="navbar navbar-light bg-light">
-                        <span className="navbar-brand mb-0 h1">Movie Recommender Study</span>
-                    </nav>
+    return (
+        <div>
+            <div className="App">
 
-                </div>
-                <Router>
-                    <Switch>
-                        <Route exact path="/" component={Welcome}/>
-                        <Route path="/inst" component={Instructions}/>
-                        <Route path="/pref" component={Preferences}/>
-                        <Route path="/movies" component={Movies}/>
-                        <Route path="/movies2" component={Movies2}/>
-                        <Route path="/movieInfo" component={MovieInfo}/>
-                        <Route path="/survey" component={Survey}/>
-                        <Route path="/exit" component={Exit}/>
-                        <Route path="/mern" component={MoviesList}/>
-                        <Route path="/surveyNew" component={SurveyNew}/>
-                    </Switch>
+                <nav className="navbar navbar-light bg-light">
+                    <span className="navbar-brand mb-0 h1">Movie Recommender Study</span>
+                </nav>
 
-                </Router>
             </div>
-        );
-    }
-}
- 
+            <Router>
+                <Switch>
+                    <Route exact path="/" component={Welcome}/>
+                    <Route path="/inst" component={Instructions}/>
+                    <Route path="/pref" component={Preferences}/>
+                    <Route path="/movies" component={Movies}/>
+                    <Route path="/movies2" component={Movies2}/>
+                    <Route path="/movieInfo" component={MovieInfo}/>
+                    <Route path="/survey" component={Survey}/>
+                    <Route path="/exit" component={Exit}/>
+                    <Route path="/mern" component={MoviesList}/>
+                    <Route path="/surveyNew" component={SurveyNew}/>
+                </Switch>
+
+            </Router>
+        </div>
+    );
+} 
+
+
 export default App;

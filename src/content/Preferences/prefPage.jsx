@@ -7,7 +7,7 @@ import 'intro.js/introjs.css';
 import {Steps} from "intro.js-react";
 import MovieGrid from "./movieGrid";
 import ProgressBarComponent from "../progressBarComponent";
-import Modal from 'react-bootstrap/Modal';
+
 
 class PrefPage extends Component {
     constructor(props) {
@@ -52,6 +52,7 @@ class PrefPage extends Component {
     if (window.innerWidth < 700) {
         alert('Please increase window size for proper visualization!');
         }
+    
   }
 
   
@@ -60,9 +61,7 @@ class PrefPage extends Component {
         const {
             stepsEnabled,
             steps,
-            initialStep,
-            hintsEnabled,
-            hints
+            initialStep
         } = this.state;
         let disabled = true;
         if (this.state.count >= 20){

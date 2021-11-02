@@ -12,7 +12,6 @@ import Loader from './loader';
 import {API, Movie} from "./constants";
 import MovieSidePanel from "./Preferences/movieSidePanel";
 import MovieGraph from "./Preferences/movieGraph";
-import { CircularProgressbar } from 'react-circular-progressbar';
 import 'react-circular-progressbar/dist/styles.css';
 
 
@@ -385,9 +384,9 @@ class Moviecard2 extends Component {
 
                 {/* "next" button  */ }  
                 <div align="right" className="padding">
-                    <Link to="/survey">
+                    <Link to="/surveyNew">
                         <button id="register" type="button" className="btn btn-sm btn-primary"
-                                onClick="window.location.href='/'">Next
+                                >Next
                         </button>
                     </Link>                    
                 </div>

@@ -34,6 +34,8 @@ class MovieGrid extends Component {
 			movies_: [],
 			visited: [],
 			curMovieTitle: "",
+			curMovieSynopsis: "",
+			curMoviePoster: "",
 			showOverView: false,
 			showModal: false
 		}
@@ -137,13 +139,27 @@ class MovieGrid extends Component {
 		return randomMovies;
 	}
 
-	handeClick = (currentMovietitle)=>{
+	
+
+	handeClick = (currentMovietitle, currentMovieSynopsis,currentMoviePoster)=>{
+
+		//let binary = Buffer.from(currentMoviePoster,"base64");
+		//let imgData = new Blob(binary.buffer,{type: 'application/octet-binary'});
+		//let link = URL.createObjectURL(imgData);
+
 		this.setState({
 			showOverView: true,
 			curMovieTitle: currentMovietitle,
+			curMovieSynopsis: currentMovieSynopsis,
+			//curMoviePoster: Buffer.from(currentMoviePoster, 'base64'),
+			//curMoviePoster: currentMoviePoster,
+			//curMoviePoster: currentMoviePoster.toString("base64"),
+			//currentMoviePoster: link,
 			showModal: true
 		});
-		console.log(currentMovietitle)
+
+	
+
 	}
 
 	closeModal = ()=>{
@@ -153,6 +169,11 @@ class MovieGrid extends Component {
 	}
 
 	render() {
+
+		console.log(typeof this.state.curMoviePoster);
+		console.log(this.state.curMoviePoster);
+
+		
 		if (this.state.visited.length > 0) {
 			return (
 				<div>
@@ -170,7 +191,7 @@ class MovieGrid extends Component {
 								<Modal.Body>
 									<strong>OverView:</strong>
 									<p>
-									overview
+									{this.state.curMovieSynopsis}
 									</p>
 								</Modal.Body>
 								<Modal.Footer>  
@@ -194,8 +215,13 @@ class MovieGrid extends Component {
 								<div id={"TN_" + currentMovie.movie._id}
 									 key={currentMovie.movie._id} className="movieCardContainer">
 									<div  className="container"
-										 style={{backgroundImage: "url(" + currentMovie.movie.poster + ")"}} >
+										 style={{backgroundImage: "url(" + Buffer.from(currentMovie.movie.poster, 'base64') + ")"}}
+										 //style={{background: `url(${ Buffer.from(currentMovie.movie.poster, 'base64')})`}}
+										 
+										 >
 											
+
+		
 										<div className={"overlay"}>
 											<div className="star-div">
 												<StarRatings
@@ -213,9 +239,10 @@ class MovieGrid extends Component {
 										</div>
 									</div>
 									<div className="text" style={{cursor: 'pointer'}}	
-									onClick={() => this.handeClick(currentMovie.movie.title)}
+									onClick={() => this.handeClick(currentMovie.movie.name, currentMovie.movie.plot, currentMovie.movie.poster)}
 									>								
-										{currentMovie.movie.title}
+										{currentMovie.movie.name}
+										
 										
 									</div>
 								</div>

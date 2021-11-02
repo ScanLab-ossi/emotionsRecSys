@@ -1,4 +1,4 @@
-import React, {Component} from 'react';
+import React, {Component, useState} from 'react';
 import "react-step-progress-bar/styles.css";
 import {Link} from "react-router-dom";
 import '../App.css';
@@ -14,7 +14,6 @@ import MovieSidePanel from "./Preferences/movieSidePanel";
 import MovieGraph from "./Preferences/movieGraph";
 import { CircularProgressbar } from 'react-circular-progressbar';
 import 'react-circular-progressbar/dist/styles.css';
-
 
 
 class Moviecard extends Component {
@@ -42,50 +41,53 @@ class Moviecard extends Component {
             currentX: 0,
             currentY: 0,
             graphVis: false,
-            listVis: false
+            listVis: false,
+        
+          
       
         };
       
     }
   
     componentDidMount() {
+        
         let movie_map = [];
         
         axios
             .get(API)
             .then(response => {
+                console.log(response);
+                console.log(response.data);
                 response.data.map(movie => {
 					movie_map.push({
 						"movie": movie,
-					});
-                                    
+					});      
 				});
 
                 // random visualization
                 let rand = this.randomVisualization(); 
-                if (rand==0){
+                if (rand===0){
                     this.setState({ graphVis: true});
-                    console.log(this.state.graphVis);
                 } else {
                     this.setState({ listVis: true})
-                    console.log(this.state.listVis);
                 }
-
+                
                 this.setState({
                     
                      loaderActive: false,// loader state: change to off
                      movies: response.data ,
+                     
 
-                     seriesForGraph: [{name: String(movie_map.map(currentMovie => (currentMovie.movie.title)).slice(0, 1)),data: [[-7,-5],]},
-                     {name: String(movie_map.map(currentMovie => (currentMovie.movie.title)).slice(1, 2)),data: [[5, 9],]},
-                     {name: String(movie_map.map(currentMovie => (currentMovie.movie.title)).slice(2, 3)),data: [[7, 5],]},
-                     {name: String(movie_map.map(currentMovie => (currentMovie.movie.title)).slice(3, 4)),data: [[-4, -6],]},
-                     {name: String(movie_map.map(currentMovie => (currentMovie.movie.title)).slice(4, 5)),data: [[5, -5],]},
-                     {name: String(movie_map.map(currentMovie => (currentMovie.movie.title)).slice(5, 6)),data: [[-7, 5],]},
-                     {name: String(movie_map.map(currentMovie => (currentMovie.movie.title)).slice(6, 7)),data: [[4, 4],]},
-                     {name: String(movie_map.map(currentMovie => (currentMovie.movie.title)).slice(7, 8)),data: [[2, 6],]},
-                     {name: String(movie_map.map(currentMovie => (currentMovie.movie.title)).slice(8, 9)),data: [[1, 8],]},
-                     {name: String(movie_map.map(currentMovie => (currentMovie.movie.title)).slice(9, 10)),data: [[-8, 0],]}
+                     seriesForGraph: [{name: String(movie_map.map(currentMovie => (currentMovie.movie.name)).slice(0, 1)),data: [[-7,-5],]},
+                     {name: String(movie_map.map(currentMovie => (currentMovie.movie.name)).slice(1, 2)),data: [[5, 9],]},
+                     {name: String(movie_map.map(currentMovie => (currentMovie.movie.name)).slice(2, 3)),data: [[7, 5],]},
+                     {name: String(movie_map.map(currentMovie => (currentMovie.movie.name)).slice(3, 4)),data: [[-4, -6],]},
+                     {name: String(movie_map.map(currentMovie => (currentMovie.movie.name)).slice(4, 5)),data: [[5, -5],]},
+                     {name: String(movie_map.map(currentMovie => (currentMovie.movie.name)).slice(5, 6)),data: [[-7, 5],]},
+                     {name: String(movie_map.map(currentMovie => (currentMovie.movie.name)).slice(6, 7)),data: [[4, 4],]},
+                     {name: String(movie_map.map(currentMovie => (currentMovie.movie.name)).slice(7, 8)),data: [[2, 6],]},
+                     {name: String(movie_map.map(currentMovie => (currentMovie.movie.name)).slice(8, 9)),data: [[1, 8],]},
+                     {name: String(movie_map.map(currentMovie => (currentMovie.movie.name)).slice(9, 10)),data: [[-8, 0],]}
                     ],
                     
                     optionsForGraph: {
@@ -106,13 +108,11 @@ class Moviecard extends Component {
                                 console.log(this.state.activeMovieName);
                                 // call function that returns movie by name
                                 console.log(this.state.movies);
-                                let thisMovie = this.state.movies.find(m => m.title === selectedMovieName );
+                                let thisMovie = this.state.movies.find(m => m.name === selectedMovieName );
                                 // then call this.handlehover
                                 this.handleHover(true,thisMovie);          
                             }                          
                           },
-
-                         
 
                           height: 500,
                           type: 'scatter',
@@ -157,29 +157,32 @@ class Moviecard extends Component {
                           type: 'image',
                           opacity: 1,
                           image: {
-                            src: [String(movie_map.map(currentMovie => (currentMovie.movie.poster)).slice(0, 1)),
-                                  String(movie_map.map(currentMovie => (currentMovie.movie.poster)).slice(1, 2)),
-                                  String(movie_map.map(currentMovie => (currentMovie.movie.poster)).slice(2, 3)),
-                                  String(movie_map.map(currentMovie => (currentMovie.movie.poster)).slice(3, 4)),
-                                  String(movie_map.map(currentMovie => (currentMovie.movie.poster)).slice(4, 5)),
-                                  String(movie_map.map(currentMovie => (currentMovie.movie.poster)).slice(5, 6)),
-                                  String(movie_map.map(currentMovie => (currentMovie.movie.poster)).slice(6, 7)),
-                                  String(movie_map.map(currentMovie => (currentMovie.movie.poster)).slice(7, 8)),
-                                  String(movie_map.map(currentMovie => (currentMovie.movie.poster)).slice(8, 9)),
-                                  String(movie_map.map(currentMovie => (currentMovie.movie.poster)).slice(9, 10)) ],
+                              // TODO: get jpgs from mongo db
+                            src: ["https://www.google.com/search?q=image&sxsrf=AOaemvKXDKjxHnhhjctC_rXroPCu3IE9gw:1635153587031&tbm=isch&source=iu&ictx=1&fir=gxFxsvFBmxeZ9M%252C0JWe7yDOKrVFAM%252C_%253Bz0mJyrKr-5YOvM%252C4O2GvGuD-Cf09M%252C_%253B2DNOEjVi-CBaYM%252CAOz9-XMe1ixZJM%252C_%253BL8xfQakH9a8tJM%252Cy1IIQDpM5HgcJM%252C_%253BEuU2RdlOYrueVM%252CUaCduni02qpvBM%252C_%253BHXLlNEpHoJATkM%252CwJy6d5uce-qbnM%252C_%253Bz4_uU0QB2pe-SM%252C7SySw5zvOgPYAM%252C_%253ByocyzzP8XUOX9M%252CtwE4vJIAwbfdCM%252C_%253BPPawKcBaPexwaM%252CNp-san7h_78aqM%252C_%253BgOUAFhrbQ2nYQM%252COXvyXJop1qSGqM%252C_%253B449X1Cy510tOqM%252C5QlcHYOkDlg16M%252C_%253BMOAYgJU89sFKnM%252CygIoihldBPn-LM%252C_&vet=1&usg=AI4_-kQF2m2XkB3kXTH1fsaI1kvavZ4u3A&sa=X&ved=2ahUKEwiuz9TlneXzAhVQ_7sIHfnfDaMQ9QF6BAgOEAE#imgrc=z0mJyrKr-5YOvM",
+                                  
+                                  "https://www.google.com/search?q=image&sxsrf=AOaemvKXDKjxHnhhjctC_rXroPCu3IE9gw:1635153587031&tbm=isch&source=iu&ictx=1&fir=gxFxsvFBmxeZ9M%252C0JWe7yDOKrVFAM%252C_%253Bz0mJyrKr-5YOvM%252C4O2GvGuD-Cf09M%252C_%253B2DNOEjVi-CBaYM%252CAOz9-XMe1ixZJM%252C_%253BL8xfQakH9a8tJM%252Cy1IIQDpM5HgcJM%252C_%253BEuU2RdlOYrueVM%252CUaCduni02qpvBM%252C_%253BHXLlNEpHoJATkM%252CwJy6d5uce-qbnM%252C_%253Bz4_uU0QB2pe-SM%252C7SySw5zvOgPYAM%252C_%253ByocyzzP8XUOX9M%252CtwE4vJIAwbfdCM%252C_%253BPPawKcBaPexwaM%252CNp-san7h_78aqM%252C_%253BgOUAFhrbQ2nYQM%252COXvyXJop1qSGqM%252C_%253B449X1Cy510tOqM%252C5QlcHYOkDlg16M%252C_%253BMOAYgJU89sFKnM%252CygIoihldBPn-LM%252C_&vet=1&usg=AI4_-kQF2m2XkB3kXTH1fsaI1kvavZ4u3A&sa=X&ved=2ahUKEwiuz9TlneXzAhVQ_7sIHfnfDaMQ9QF6BAgOEAE#imgrc=z0mJyrKr-5YOvM"],
+                                 // String(movie_map.map(currentMovie => (currentMovie.movie.poster)).slice(2, 3)),
+                                  //String(movie_map.map(currentMovie => (currentMovie.movie.poster)).slice(3, 4)),
+                                  //String(movie_map.map(currentMovie => (currentMovie.movie.poster)).slice(4, 5)),
+                                 // String(movie_map.map(currentMovie => (currentMovie.movie.poster)).slice(5, 6)),
+                                 // String(movie_map.map(currentMovie => (currentMovie.movie.poster)).slice(6, 7)),
+                                //  String(movie_map.map(currentMovie => (currentMovie.movie.poster)).slice(7, 8)),
+                                //  String(movie_map.map(currentMovie => (currentMovie.movie.poster)).slice(8, 9)),
+                                // String(movie_map.map(currentMovie => (currentMovie.movie.poster)).slice(9, 10)) ],
                             width: 40,
                             height: 40
                           }
                         },
                         
                       }                 
-                    });
-                    
+                    },()=>console.log(this.state) // set state callback function
+                    );
             })
             .catch(error => {
                 console.log(error);
-                
+                console.log("MovieCards.jsx - component did mount error!")
             });
+            
     }
 
     handleHover(isShown, activeMovie){
@@ -210,12 +213,7 @@ class Moviecard extends Component {
     onSubmit(e) {
         e.preventDefault();
 
-      // const exercise = {
-      //   username: this.state.username,
-      //   description: this.state.description,
-      //   duration: this.state.duration,
-      //   date: this.state.date
-      // };
+    
         axios
             .get(API + this.state.mId)
             .then(response => {
@@ -237,14 +235,6 @@ class Moviecard extends Component {
         this.setState({
             isActive: false
         })
-    };
-
-    handleHover(isShown, activeMovie){
-        this.setState(prevState => ({
-            setIsShown: isShown,
-            activeMovie: activeMovie,
-            isHovered: !prevState.isHovered
-        }));
     };
     
     handleRateChange = evt => {
@@ -269,11 +259,17 @@ class Moviecard extends Component {
 
     randomVisualization(){
         let rand = Math.floor(Math.random()*2);
-        console.log(rand);
         return rand;
     }
 
-    render() {    
+  
+
+    
+
+       
+    render() {  
+   
+    
         const active = this.state.isActive ? "pulse animated" : "";
         const isEnabled = this.canBeSubmitted();
         const {rate} = this.state;
@@ -291,6 +287,10 @@ class Moviecard extends Component {
                 <ProgressBarComponent percentComplete={75} />
                 <br/>
 
+                <div>
+                    
+                </div>
+
 
                 {/* Title of the page */ }
                 <div> 
@@ -300,6 +300,8 @@ class Moviecard extends Component {
                     Please click on each movie, read the info, and perform the actions below
                     </b>
                 </p>
+
+                
                 </div>
 
                 <div className="row padding">
@@ -324,6 +326,7 @@ class Moviecard extends Component {
                      <MovieGraph options = {this.state.optionsForGraph} series={this.state.seriesForGraph} handler={this.handleHover}/>
                        </div>
                         : (  <MovieSidePanel panelTitle="Recommened movies for you" movieList={this.state.movies.slice(0, 10)} handler={this.handleHover  }/> )}
+
                     
 
 
@@ -332,31 +335,36 @@ class Moviecard extends Component {
                         <div className="col-sm-4">
                             <Card body inverse style={{ backgroundColor: '#8fd6f2', borderColor: '#333', width:'100%',
                                 height:550}}>
+                                    <CardText style={{color: 'blue'}}>
+                                        <b>tt (IMDB ID): </b> {this.state.activeMovie.titleId}
+                                    </CardText>
+                                    <CardText style={{color: 'blue'}}>
+                                        <b>signature: </b> {String(this.state.activeMovie.signature)}
+                                    </CardText>
                                     <CardTitle style={{fontWeight: 'bold', fontSize: '1.2em', color: 'black'}}>
-                                        {this.state.activeMovie.title} ( {this.state.activeMovie.year} )
+                                        {this.state.activeMovie.name} ( {this.state.activeMovie.release_year} )
                                     </CardTitle>
+                                    {/* TODO: get jpg from mongo db
                                     <CardImg top src={this.state.activeMovie.poster} alt="Card image cap"
-                                            style={{ maxHeight: '150px', width:'150px', height:'auto'}} />
+                                            style={{ maxHeight: '150px', width:'150px', height:'auto'}} /> */}
+                                     
+                                    
 
                                     <CardBody style={{maxHeight: '300px'}}>
                                     <CardText style={{color: 'black'}}>
                                         <b>Coordinates: ({this.state.currentX},{this.state.currentY})</b>
                                     </CardText> 
                                     <CardText style={{color: 'black'}}>
-                                        <b>Overview</b>
+                                        <b>Overview:</b> {this.state.activeMovie.plot}
+                                    </CardText>
+                            
+                                    <CardText style={{color: 'black'}}>
+                                        <b>Director:</b> {this.state.activeMovie.movie_directors} <b> Writers:</b> {this.state.activeMovie.movie_writers}
                                     </CardText>
                                     <CardText style={{color: 'black'}}>
-                                         {this.state.activeMovie.description} (description)
+                                        <b>Stars: </b> {this.state.activeMovie.movie_stars.slice(0, 50)}
                                     </CardText>
-                                    <CardText style={{color: 'black'}}>
-                                        <b>Director:</b> {this.state.activeMovie.director} <b> Writers:</b> {this.state.activeMovie.writer}
-                                    </CardText>
-                                    <CardText style={{color: 'black'}}>
-                                        <b>Stars: </b> {this.state.activeMovie.cast.slice(0, 50)}
-                                    </CardText>
-                                    <CardText style={{color: 'blue'}}>
-                                        <b>tt (IMDB ID): </b> {this.state.activeMovie.imdb_id}
-                                    </CardText>
+                                    
                                         
                                         <button ><img src="check.png" width="12px" height="12px"></img></button>
                                         &nbsp;&nbsp;&nbsp;
@@ -374,7 +382,7 @@ class Moviecard extends Component {
                 <div align="right" className="padding">
                     <Link to="/movies2">
                         <button id="register" type="button" className="btn btn-sm btn-primary"
-                                onClick="window.location.href='/'">Next
+                                >Next
                         </button>
                     </Link>                    
                 </div>
