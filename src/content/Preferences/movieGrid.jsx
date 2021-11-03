@@ -142,24 +142,23 @@ class MovieGrid extends Component {
 	
 
 	handeClick = (currentMovietitle, currentMovieSynopsis,currentMoviePoster)=>{
+		
+		let binary = Buffer.from(currentMoviePoster,"base64");
+		//let base64img = Buffer.from(currentMoviePoster).toString('base64')
+		//let image = new Image();
+		//image.src = base64img;
 
-		//let binary = Buffer.from(currentMoviePoster,"base64");
-		//let imgData = new Blob(binary.buffer,{type: 'application/octet-binary'});
-		//let link = URL.createObjectURL(imgData);
+		console.log(typeof binary);
+		console.log(binary);
+		console.log(typeof binary);
 
 		this.setState({
 			showOverView: true,
 			curMovieTitle: currentMovietitle,
 			curMovieSynopsis: currentMovieSynopsis,
-			//curMoviePoster: Buffer.from(currentMoviePoster, 'base64'),
-			//curMoviePoster: currentMoviePoster,
-			//curMoviePoster: currentMoviePoster.toString("base64"),
-			//currentMoviePoster: link,
-			showModal: true
+			showModal: true,
+			currentMoviePoster: binary
 		});
-
-	
-
 	}
 
 	closeModal = ()=>{
@@ -170,8 +169,9 @@ class MovieGrid extends Component {
 
 	render() {
 
-		console.log(typeof this.state.curMoviePoster);
 		console.log(this.state.curMoviePoster);
+		console.log(this.state.curMoviePoster.toString());
+		console.log(typeof this.state.curMoviePoster);
 
 		
 		if (this.state.visited.length > 0) {
@@ -215,11 +215,13 @@ class MovieGrid extends Component {
 								<div id={"TN_" + currentMovie.movie._id}
 									 key={currentMovie.movie._id} className="movieCardContainer">
 									<div  className="container"
-										 style={{backgroundImage: "url(" + Buffer.from(currentMovie.movie.poster, 'base64') + ")"}}
-										 //style={{background: `url(${ Buffer.from(currentMovie.movie.poster, 'base64')})`}}
+										 style={{backgroundImage: "url(" + URL.createObjectURL(
+											new Blob([Buffer.from(currentMovie.movie.poster,"base64").buffer], { type: 'image/png' })) + ")"}}
+										 //style={{backgroundImage: "url(" + currentMovie.movie.poster + ")"}}>
 										 
 										 >
 											
+											{/* <img src={this.state.currentMoviePoster} />  TOO LARGE ERROR! */} 
 
 		
 										<div className={"overlay"}>
