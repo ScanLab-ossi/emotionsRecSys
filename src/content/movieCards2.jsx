@@ -13,6 +13,8 @@ import {API, Movie} from "./constants";
 import MovieSidePanel from "./Preferences/movieSidePanel";
 import MovieGraph from "./Preferences/movieGraph";
 import 'react-circular-progressbar/dist/styles.css';
+import Modal from 'react-bootstrap/Modal';
+import Button from 'react-bootstrap/Button';
 
 
 
@@ -40,7 +42,10 @@ class Moviecard2 extends Component {
             currentX: 0,
             currentY: 0,
             graphVis: false,
-            listVis: false
+            listVis: false,
+            showModal: false,
+            showOverView: true,
+            curMovieSynopsis: ""
       
         };
       
@@ -74,16 +79,16 @@ class Moviecard2 extends Component {
                      loaderActive: false,// loader state: change to off
                      movies: response.data ,
 
-                     seriesForGraph: [{name: String(movie_map.map(currentMovie => (currentMovie.movie.title)).slice(0, 1)),data: [[-7,-5],]},
-                     {name: String(movie_map.map(currentMovie => (currentMovie.movie.title)).slice(1, 2)),data: [[5, 9],]},
-                     {name: String(movie_map.map(currentMovie => (currentMovie.movie.title)).slice(2, 3)),data: [[7, 5],]},
-                     {name: String(movie_map.map(currentMovie => (currentMovie.movie.title)).slice(3, 4)),data: [[-4, -6],]},
-                     {name: String(movie_map.map(currentMovie => (currentMovie.movie.title)).slice(4, 5)),data: [[5, -5],]},
-                     {name: String(movie_map.map(currentMovie => (currentMovie.movie.title)).slice(5, 6)),data: [[-7, 5],]},
-                     {name: String(movie_map.map(currentMovie => (currentMovie.movie.title)).slice(6, 7)),data: [[4, 4],]},
-                     {name: String(movie_map.map(currentMovie => (currentMovie.movie.title)).slice(7, 8)),data: [[2, 6],]},
-                     {name: String(movie_map.map(currentMovie => (currentMovie.movie.title)).slice(8, 9)),data: [[1, 8],]},
-                     {name: String(movie_map.map(currentMovie => (currentMovie.movie.title)).slice(9, 10)),data: [[-8, 0],]}
+                     seriesForGraph: [{name: String(movie_map.map(currentMovie => (currentMovie.movie.name)).slice(0, 1)),data: [[-7,-5],]},
+                     {name: String(movie_map.map(currentMovie => (currentMovie.movie.name)).slice(1, 2)),data: [[5, 9],]},
+                     {name: String(movie_map.map(currentMovie => (currentMovie.movie.name)).slice(2, 3)),data: [[7, 5],]},
+                     {name: String(movie_map.map(currentMovie => (currentMovie.movie.name)).slice(3, 4)),data: [[-4, -6],]},
+                     {name: String(movie_map.map(currentMovie => (currentMovie.movie.name)).slice(4, 5)),data: [[5, -5],]},
+                     {name: String(movie_map.map(currentMovie => (currentMovie.movie.name)).slice(5, 6)),data: [[-7, 5],]},
+                     {name: String(movie_map.map(currentMovie => (currentMovie.movie.name)).slice(6, 7)),data: [[4, 4],]},
+                     {name: String(movie_map.map(currentMovie => (currentMovie.movie.name)).slice(7, 8)),data: [[2, 6],]},
+                     {name: String(movie_map.map(currentMovie => (currentMovie.movie.name)).slice(8, 9)),data: [[1, 8],]},
+                     {name: String(movie_map.map(currentMovie => (currentMovie.movie.name)).slice(9, 10)),data: [[-8, 0],]}
                     ],
                     
                     optionsForGraph: {
@@ -104,7 +109,7 @@ class Moviecard2 extends Component {
                                 console.log(this.state.activeMovieName);
                                 // call function that returns movie by name
                                 console.log(this.state.movies);
-                                let thisMovie = this.state.movies.find(m => m.title === selectedMovieName );
+                                let thisMovie = this.state.movies.find(m => m.name === selectedMovieName );
                                 // then call this.handlehover
                                 this.handleHover(true,thisMovie);          
                             }                          
@@ -155,16 +160,26 @@ class Moviecard2 extends Component {
                           type: 'image',
                           opacity: 1,
                           image: {
-                            src: [String(movie_map.map(currentMovie => (currentMovie.movie.poster)).slice(0, 1)),
-                                  String(movie_map.map(currentMovie => (currentMovie.movie.poster)).slice(1, 2)),
-                                  String(movie_map.map(currentMovie => (currentMovie.movie.poster)).slice(2, 3)),
-                                  String(movie_map.map(currentMovie => (currentMovie.movie.poster)).slice(3, 4)),
-                                  String(movie_map.map(currentMovie => (currentMovie.movie.poster)).slice(4, 5)),
-                                  String(movie_map.map(currentMovie => (currentMovie.movie.poster)).slice(5, 6)),
-                                  String(movie_map.map(currentMovie => (currentMovie.movie.poster)).slice(6, 7)),
-                                  String(movie_map.map(currentMovie => (currentMovie.movie.poster)).slice(7, 8)),
-                                  String(movie_map.map(currentMovie => (currentMovie.movie.poster)).slice(8, 9)),
-                                  String(movie_map.map(currentMovie => (currentMovie.movie.poster)).slice(9, 10)) ],
+                            src: [String(movie_map.map(currentMovie => (URL.createObjectURL(
+                                new Blob([Buffer.from(currentMovie.movie.poster,"base64").buffer], { type: 'image/png' })))).slice(0, 1)),
+                                  String(movie_map.map(currentMovie => (URL.createObjectURL(
+                                    new Blob([Buffer.from(currentMovie.movie.poster,"base64").buffer], { type: 'image/png' })))).slice(1, 2)),
+                                  String(movie_map.map(currentMovie => (URL.createObjectURL(
+                                    new Blob([Buffer.from(currentMovie.movie.poster,"base64").buffer], { type: 'image/png' })))).slice(2, 3)),
+                                  String(movie_map.map(currentMovie => (URL.createObjectURL(
+                                    new Blob([Buffer.from(currentMovie.movie.poster,"base64").buffer], { type: 'image/png' })))).slice(3, 4)),
+                                  String(movie_map.map(currentMovie => (URL.createObjectURL(
+                                    new Blob([Buffer.from(currentMovie.movie.poster,"base64").buffer], { type: 'image/png' })))).slice(4, 5)),
+                                  String(movie_map.map(currentMovie => (URL.createObjectURL(
+                                    new Blob([Buffer.from(currentMovie.movie.poster,"base64").buffer], { type: 'image/png' })))).slice(5, 6)),
+                                  String(movie_map.map(currentMovie => (URL.createObjectURL(
+                                    new Blob([Buffer.from(currentMovie.movie.poster,"base64").buffer], { type: 'image/png' })))).slice(6, 7)),
+                                  String(movie_map.map(currentMovie => (URL.createObjectURL(
+                                    new Blob([Buffer.from(currentMovie.movie.poster,"base64").buffer], { type: 'image/png' })))).slice(7, 8)),
+                                  String(movie_map.map(currentMovie => (URL.createObjectURL(
+                                    new Blob([Buffer.from(currentMovie.movie.poster,"base64").buffer], { type: 'image/png' })))).slice(8, 9)),
+                                  String(movie_map.map(currentMovie => (URL.createObjectURL(
+                                    new Blob([Buffer.from(currentMovie.movie.poster,"base64").buffer], { type: 'image/png' })))).slice(9, 10)) ],
                             width: 40,
                             height: 40
                           }
@@ -271,6 +286,22 @@ class Moviecard2 extends Component {
         return rand;
     }
 
+    handeClick = (currentMovieSynopsis)=>{
+		
+		this.setState({
+			showModal: true,
+            showOverView: true,
+            curMovieSynopsis: currentMovieSynopsis
+		});
+	}
+
+    closeModal = ()=>{
+		this.setState({
+			showModal: false
+		});
+	}
+
+
     render() {    
         const active = this.state.isActive ? "pulse animated" : "";
         const isEnabled = this.canBeSubmitted();
@@ -331,30 +362,57 @@ class Moviecard2 extends Component {
                         <div className="col-sm-4">
                             <Card body inverse style={{ backgroundColor: '#8fd6f2', borderColor: '#333', width:'100%',
                                 height:550}}>
+                                    
                                     <CardTitle style={{fontWeight: 'bold', fontSize: '1.2em', color: 'black'}}>
-                                        {this.state.activeMovie.title} ( {this.state.activeMovie.year} )
+                                        {this.state.activeMovie.name} ( {this.state.activeMovie.release_year} )
                                     </CardTitle>
-                                    <CardImg top src={this.state.activeMovie.poster} alt="Card image cap"
-                                            style={{ maxHeight: '150px', width:'150px', height:'auto'}} />
+                                    
+                                    <CardImg top src={URL.createObjectURL(
+											new Blob([Buffer.from(this.state.activeMovie.poster,"base64").buffer], { type: 'image/png' }))} alt="Card image cap"
+                                            style={{ maxHeight: '150px', width:'150px', height:'auto'}} /> 
+                                     
+                                    
 
                                     <CardBody style={{maxHeight: '300px'}}>
                                     <CardText style={{color: 'black'}}>
                                         <b>Coordinates: ({this.state.currentX},{this.state.currentY})</b>
                                     </CardText> 
+                                    <CardText style={{color: 'black' ,cursor: 'pointer'}}  onClick={() => this.handeClick(this.state.activeMovie.plot)}>
+                                        <b>Overview:</b> {this.state.activeMovie.plot.slice(0,100)} <p>... (click to see more)</p>
+                                    </CardText>
+
+                                    <div>
+                                    {this.state.showOverView ? (
+                                    <div >
+                                    <Modal show={this.state.showModal} dialogClassName="modal-70w" >
+                                        <Modal.Header>
+                                            <Modal.Title>{this.state.curMovieTitle}</Modal.Title>
+                                        </Modal.Header>
+                                        <Modal.Body>
+                                            <strong>OverView:</strong>
+                                            <p>
+                                            {this.state.curMovieSynopsis}
+                                            </p>
+                                        </Modal.Body>
+                                        <Modal.Footer>  
+                                    
+                                        <Button variant="secondary" onClick={this.closeModal}>
+                                            OK
+                                        </Button>
+                                    
+                                        </Modal.Footer>
+							    	</Modal>
+                                    </div>):(<div></div>)}
+					                </div>
+                            
                                     <CardText style={{color: 'black'}}>
-                                        <b>Overview</b>
+                                        <b>Director:</b> {this.state.activeMovie.movie_directors.slice(0, 40)} 
                                     </CardText>
                                     <CardText style={{color: 'black'}}>
-                                         {this.state.activeMovie.description} (description)
+                                        <b> Writers:</b> {this.state.activeMovie.movie_writers.slice(0, 40)}
                                     </CardText>
                                     <CardText style={{color: 'black'}}>
-                                        <b>Director:</b> {this.state.activeMovie.director} <b> Writers:</b> {this.state.activeMovie.writer}
-                                    </CardText>
-                                    <CardText style={{color: 'black'}}>
-                                        <b>Stars: </b> {this.state.activeMovie.cast.slice(0, 50)}
-                                    </CardText>
-                                    <CardText style={{color: 'blue'}}>
-                                        <b>tt (IMDB ID): </b> {this.state.activeMovie.imdb_id}
+                                        <b>Stars: </b> {this.state.activeMovie.movie_stars.slice(0, 40)}
                                     </CardText>
                                    
 

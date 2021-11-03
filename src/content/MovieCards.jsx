@@ -162,18 +162,26 @@ class Moviecard extends Component {
                           type: 'image',
                           opacity: 1,
                           image: {
-                              // TODO: get jpgs from mongo db
-                            src: ["https://www.google.com/search?q=image&sxsrf=AOaemvKXDKjxHnhhjctC_rXroPCu3IE9gw:1635153587031&tbm=isch&source=iu&ictx=1&fir=gxFxsvFBmxeZ9M%252C0JWe7yDOKrVFAM%252C_%253Bz0mJyrKr-5YOvM%252C4O2GvGuD-Cf09M%252C_%253B2DNOEjVi-CBaYM%252CAOz9-XMe1ixZJM%252C_%253BL8xfQakH9a8tJM%252Cy1IIQDpM5HgcJM%252C_%253BEuU2RdlOYrueVM%252CUaCduni02qpvBM%252C_%253BHXLlNEpHoJATkM%252CwJy6d5uce-qbnM%252C_%253Bz4_uU0QB2pe-SM%252C7SySw5zvOgPYAM%252C_%253ByocyzzP8XUOX9M%252CtwE4vJIAwbfdCM%252C_%253BPPawKcBaPexwaM%252CNp-san7h_78aqM%252C_%253BgOUAFhrbQ2nYQM%252COXvyXJop1qSGqM%252C_%253B449X1Cy510tOqM%252C5QlcHYOkDlg16M%252C_%253BMOAYgJU89sFKnM%252CygIoihldBPn-LM%252C_&vet=1&usg=AI4_-kQF2m2XkB3kXTH1fsaI1kvavZ4u3A&sa=X&ved=2ahUKEwiuz9TlneXzAhVQ_7sIHfnfDaMQ9QF6BAgOEAE#imgrc=z0mJyrKr-5YOvM",
-                                  
-                                  "https://www.google.com/search?q=image&sxsrf=AOaemvKXDKjxHnhhjctC_rXroPCu3IE9gw:1635153587031&tbm=isch&source=iu&ictx=1&fir=gxFxsvFBmxeZ9M%252C0JWe7yDOKrVFAM%252C_%253Bz0mJyrKr-5YOvM%252C4O2GvGuD-Cf09M%252C_%253B2DNOEjVi-CBaYM%252CAOz9-XMe1ixZJM%252C_%253BL8xfQakH9a8tJM%252Cy1IIQDpM5HgcJM%252C_%253BEuU2RdlOYrueVM%252CUaCduni02qpvBM%252C_%253BHXLlNEpHoJATkM%252CwJy6d5uce-qbnM%252C_%253Bz4_uU0QB2pe-SM%252C7SySw5zvOgPYAM%252C_%253ByocyzzP8XUOX9M%252CtwE4vJIAwbfdCM%252C_%253BPPawKcBaPexwaM%252CNp-san7h_78aqM%252C_%253BgOUAFhrbQ2nYQM%252COXvyXJop1qSGqM%252C_%253B449X1Cy510tOqM%252C5QlcHYOkDlg16M%252C_%253BMOAYgJU89sFKnM%252CygIoihldBPn-LM%252C_&vet=1&usg=AI4_-kQF2m2XkB3kXTH1fsaI1kvavZ4u3A&sa=X&ved=2ahUKEwiuz9TlneXzAhVQ_7sIHfnfDaMQ9QF6BAgOEAE#imgrc=z0mJyrKr-5YOvM"],
-                                 // String(movie_map.map(currentMovie => (currentMovie.movie.poster)).slice(2, 3)),
-                                  //String(movie_map.map(currentMovie => (currentMovie.movie.poster)).slice(3, 4)),
-                                  //String(movie_map.map(currentMovie => (currentMovie.movie.poster)).slice(4, 5)),
-                                 // String(movie_map.map(currentMovie => (currentMovie.movie.poster)).slice(5, 6)),
-                                 // String(movie_map.map(currentMovie => (currentMovie.movie.poster)).slice(6, 7)),
-                                //  String(movie_map.map(currentMovie => (currentMovie.movie.poster)).slice(7, 8)),
-                                //  String(movie_map.map(currentMovie => (currentMovie.movie.poster)).slice(8, 9)),
-                                // String(movie_map.map(currentMovie => (currentMovie.movie.poster)).slice(9, 10)) ],
+                            src: [String(movie_map.map(currentMovie => (URL.createObjectURL(
+                                new Blob([Buffer.from(currentMovie.movie.poster,"base64").buffer], { type: 'image/png' })))).slice(0, 1)),
+                                  String(movie_map.map(currentMovie => (URL.createObjectURL(
+                                    new Blob([Buffer.from(currentMovie.movie.poster,"base64").buffer], { type: 'image/png' })))).slice(1, 2)),
+                                  String(movie_map.map(currentMovie => (URL.createObjectURL(
+                                    new Blob([Buffer.from(currentMovie.movie.poster,"base64").buffer], { type: 'image/png' })))).slice(2, 3)),
+                                  String(movie_map.map(currentMovie => (URL.createObjectURL(
+                                    new Blob([Buffer.from(currentMovie.movie.poster,"base64").buffer], { type: 'image/png' })))).slice(3, 4)),
+                                  String(movie_map.map(currentMovie => (URL.createObjectURL(
+                                    new Blob([Buffer.from(currentMovie.movie.poster,"base64").buffer], { type: 'image/png' })))).slice(4, 5)),
+                                  String(movie_map.map(currentMovie => (URL.createObjectURL(
+                                    new Blob([Buffer.from(currentMovie.movie.poster,"base64").buffer], { type: 'image/png' })))).slice(5, 6)),
+                                  String(movie_map.map(currentMovie => (URL.createObjectURL(
+                                    new Blob([Buffer.from(currentMovie.movie.poster,"base64").buffer], { type: 'image/png' })))).slice(6, 7)),
+                                  String(movie_map.map(currentMovie => (URL.createObjectURL(
+                                    new Blob([Buffer.from(currentMovie.movie.poster,"base64").buffer], { type: 'image/png' })))).slice(7, 8)),
+                                  String(movie_map.map(currentMovie => (URL.createObjectURL(
+                                    new Blob([Buffer.from(currentMovie.movie.poster,"base64").buffer], { type: 'image/png' })))).slice(8, 9)),
+                                  String(movie_map.map(currentMovie => (URL.createObjectURL(
+                                    new Blob([Buffer.from(currentMovie.movie.poster,"base64").buffer], { type: 'image/png' })))).slice(9, 10)) ],
                             width: 40,
                             height: 40
                           }
@@ -217,8 +225,7 @@ class Moviecard extends Component {
   
     onSubmit(e) {
         e.preventDefault();
-
-    
+  
         axios
             .get(API + this.state.mId)
             .then(response => {
@@ -397,10 +404,13 @@ class Moviecard extends Component {
 					                </div>
                             
                                     <CardText style={{color: 'black'}}>
-                                        <b>Director:</b> {this.state.activeMovie.movie_directors} <b> Writers:</b> {this.state.activeMovie.movie_writers}
+                                        <b>Director:</b> {this.state.activeMovie.movie_directors.slice(0, 40)} 
                                     </CardText>
                                     <CardText style={{color: 'black'}}>
-                                        <b>Stars: </b> {this.state.activeMovie.movie_stars.slice(0, 50)}
+                                        <b> Writers:</b> {this.state.activeMovie.movie_writers.slice(0, 40)}
+                                    </CardText>
+                                    <CardText style={{color: 'black'}}>
+                                        <b>Stars: </b> {this.state.activeMovie.movie_stars.slice(0, 40)}
                                     </CardText>
                                     
                                         

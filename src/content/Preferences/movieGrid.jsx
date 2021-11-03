@@ -204,9 +204,6 @@ class MovieGrid extends Component {
 																			 
 										 >
 											
-										
-
-		
 										<div className={"overlay"}>
 											<div className="star-div">
 												<StarRatings
