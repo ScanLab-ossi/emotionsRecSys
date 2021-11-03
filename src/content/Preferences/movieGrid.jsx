@@ -143,21 +143,11 @@ class MovieGrid extends Component {
 
 	handeClick = (currentMovietitle, currentMovieSynopsis,currentMoviePoster)=>{
 		
-		let binary = Buffer.from(currentMoviePoster,"base64");
-		//let base64img = Buffer.from(currentMoviePoster).toString('base64')
-		//let image = new Image();
-		//image.src = base64img;
-
-		console.log(typeof binary);
-		console.log(binary);
-		console.log(typeof binary);
-
 		this.setState({
 			showOverView: true,
 			curMovieTitle: currentMovietitle,
 			curMovieSynopsis: currentMovieSynopsis,
 			showModal: true,
-			currentMoviePoster: binary
 		});
 	}
 
@@ -167,13 +157,7 @@ class MovieGrid extends Component {
 		});
 	}
 
-	render() {
-
-		console.log(this.state.curMoviePoster);
-		console.log(this.state.curMoviePoster.toString());
-		console.log(typeof this.state.curMoviePoster);
-
-		
+	render() {		
 		if (this.state.visited.length > 0) {
 			return (
 				<div>
@@ -217,11 +201,10 @@ class MovieGrid extends Component {
 									<div  className="container"
 										 style={{backgroundImage: "url(" + URL.createObjectURL(
 											new Blob([Buffer.from(currentMovie.movie.poster,"base64").buffer], { type: 'image/png' })) + ")"}}
-										 //style={{backgroundImage: "url(" + currentMovie.movie.poster + ")"}}>
-										 
+																			 
 										 >
 											
-											{/* <img src={this.state.currentMoviePoster} />  TOO LARGE ERROR! */} 
+										
 
 		
 										<div className={"overlay"}>

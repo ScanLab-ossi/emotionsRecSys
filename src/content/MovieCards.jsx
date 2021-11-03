@@ -14,6 +14,8 @@ import MovieSidePanel from "./Preferences/movieSidePanel";
 import MovieGraph from "./Preferences/movieGraph";
 import { CircularProgressbar } from 'react-circular-progressbar';
 import 'react-circular-progressbar/dist/styles.css';
+import Modal from 'react-bootstrap/Modal';
+import Button from 'react-bootstrap/Button';
 
 
 class Moviecard extends Component {
@@ -42,6 +44,9 @@ class Moviecard extends Component {
             currentY: 0,
             graphVis: false,
             listVis: false,
+            showModal: false,
+            showOverView: true,
+            curMovieSynopsis: ""
         
           
       
@@ -262,7 +267,20 @@ class Moviecard extends Component {
         return rand;
     }
 
-  
+    handeClick = (currentMovieSynopsis)=>{
+		
+		this.setState({
+			showModal: true,
+            showOverView: true,
+            curMovieSynopsis: currentMovieSynopsis
+		});
+	}
+
+    closeModal = ()=>{
+		this.setState({
+			showModal: false
+		});
+	}
 
     
 
@@ -335,18 +353,14 @@ class Moviecard extends Component {
                         <div className="col-sm-4">
                             <Card body inverse style={{ backgroundColor: '#8fd6f2', borderColor: '#333', width:'100%',
                                 height:550}}>
-                                    <CardText style={{color: 'blue'}}>
-                                        <b>tt (IMDB ID): </b> {this.state.activeMovie.titleId}
-                                    </CardText>
-                                    <CardText style={{color: 'blue'}}>
-                                        <b>signature: </b> {String(this.state.activeMovie.signature)}
-                                    </CardText>
+                                    
                                     <CardTitle style={{fontWeight: 'bold', fontSize: '1.2em', color: 'black'}}>
                                         {this.state.activeMovie.name} ( {this.state.activeMovie.release_year} )
                                     </CardTitle>
-                                    {/* TODO: get jpg from mongo db
-                                    <CardImg top src={this.state.activeMovie.poster} alt="Card image cap"
-                                            style={{ maxHeight: '150px', width:'150px', height:'auto'}} /> */}
+                                    
+                                    <CardImg top src={URL.createObjectURL(
+											new Blob([Buffer.from(this.state.activeMovie.poster,"base64").buffer], { type: 'image/png' }))} alt="Card image cap"
+                                            style={{ maxHeight: '150px', width:'150px', height:'auto'}} /> 
                                      
                                     
 
@@ -354,9 +368,33 @@ class Moviecard extends Component {
                                     <CardText style={{color: 'black'}}>
                                         <b>Coordinates: ({this.state.currentX},{this.state.currentY})</b>
                                     </CardText> 
-                                    <CardText style={{color: 'black'}}>
-                                        <b>Overview:</b> {this.state.activeMovie.plot}
+                                    <CardText style={{color: 'black' ,cursor: 'pointer'}}  onClick={() => this.handeClick(this.state.activeMovie.plot)}>
+                                        <b>Overview:</b> {this.state.activeMovie.plot.slice(0,100)} <p>... (click to see more)</p>
                                     </CardText>
+
+                                    <div>
+                                    {this.state.showOverView ? (
+                                    <div >
+                                    <Modal show={this.state.showModal} dialogClassName="modal-70w" >
+                                        <Modal.Header>
+                                            <Modal.Title>{this.state.curMovieTitle}</Modal.Title>
+                                        </Modal.Header>
+                                        <Modal.Body>
+                                            <strong>OverView:</strong>
+                                            <p>
+                                            {this.state.curMovieSynopsis}
+                                            </p>
+                                        </Modal.Body>
+                                        <Modal.Footer>  
+                                    
+                                        <Button variant="secondary" onClick={this.closeModal}>
+                                            OK
+                                        </Button>
+                                    
+                                        </Modal.Footer>
+							    	</Modal>
+                                    </div>):(<div></div>)}
+					                </div>
                             
                                     <CardText style={{color: 'black'}}>
                                         <b>Director:</b> {this.state.activeMovie.movie_directors} <b> Writers:</b> {this.state.activeMovie.movie_writers}
