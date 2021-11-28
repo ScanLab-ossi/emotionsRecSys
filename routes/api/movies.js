@@ -2,7 +2,7 @@ const router = require("express").Router();
 let Movie = require("../../models/movie.model");
 
 router.route("/").get((req, res) => {
-  Movie.find().limit(20)
+  Movie.aggregate([{ $sample: { size: 1000 } }])
     .then(movie => res.send(movie))
     .catch(err => res.status(400).json("movies.js: 1st router Error: " + err));
 });
