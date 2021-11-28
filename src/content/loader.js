@@ -7,7 +7,7 @@ function Loader(){
                 <i className="fa fa-spinner fa-pulse fa-5x fa-fw" />
             </div>
             <div style={{display: 'flex',  justifyContent:'center', alignItems:'center'}}>
-                <h3> Loading your recommendation... </h3>
+                <h3> Loading ... </h3>
             </div>
         </div>
     );

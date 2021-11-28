@@ -7,6 +7,8 @@ import 'intro.js/introjs.css';
 import {Steps} from "intro.js-react";
 import MovieGrid from "./movieGrid";
 import ProgressBarComponent from "../progressBarComponent";
+import Loader from '../loader';
+import 'react-circular-progressbar/dist/styles.css';
 
 
 class PrefPage extends Component {
@@ -16,6 +18,7 @@ class PrefPage extends Component {
 
 
         this.state = {
+            loaderActive: true,
             stepsEnabled: true,
             initialStep: 0,
             steps: [
@@ -49,6 +52,7 @@ class PrefPage extends Component {
   
 
   componentDidMount(){
+    this.setState({loaderActive: false});
     if (window.innerWidth < 700) {
         alert('Please increase window size for proper visualization!');
         }
@@ -67,6 +71,9 @@ class PrefPage extends Component {
         if (this.state.count >= 20){
             disabled = false;
     }
+
+    
+    if (this.state.loaderActive) return  <Loader />; // Conditional Rendering!
 
     return (
         <div>

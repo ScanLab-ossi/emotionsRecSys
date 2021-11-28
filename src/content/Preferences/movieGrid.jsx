@@ -7,6 +7,8 @@ import Modal from 'react-bootstrap/Modal';
 import { Link }  from "react-router-dom";
 import Button from 'react-bootstrap/Button';
 import { useState, useEffect } from 'react';
+import Loader from '../loader';
+import 'react-circular-progressbar/dist/styles.css';
 
 const carouselArrowRight = ({ isActive }) => (
 	<span className={"carouselArrowRight"} />
@@ -31,13 +33,16 @@ class MovieGrid extends Component {
 	constructor(props) {
 		super(props)
 		this.state = {
+			loaderActive: true,
 			movies_: [],
 			visited: [],
 			curMovieTitle: "",
 			curMovieSynopsis: "",
 			curMoviePoster: "",
 			showOverView: false,
-			showModal: false
+			showModal: false,
+			movies_r: [],
+			currentPage: 1
 		}
 	}
 	componentDidMount() {
@@ -52,14 +57,18 @@ class MovieGrid extends Component {
 					});
 				});
 				this.setState({
-					movies_: movie_map
+					movies_: movie_map,
+					loaderActive: false
+					
 				})
 			})
 			.catch(error => {
 				console.log(error);
 			});
+		
 		if (this.state.visited.length <= 5) {
 			this.updateVisited();
+					
 		}
 	}
 
@@ -68,11 +77,10 @@ class MovieGrid extends Component {
 		let randomMovies = [];
 		if (this.state.visited.length <= randomCount) {
 			randomMovies = this.getRandomMovies(this.state.movies_, randomCount);
-
 			this.setState({
 				visited: randomMovies
-			});
-		}
+			});			
+		}	
 	}
 
 	movieList() {
@@ -157,8 +165,12 @@ class MovieGrid extends Component {
 		});
 	}
 
-	render() {		
+	
+
+	render() {	
+	
 		if (this.state.visited.length > 0) {
+			if (this.state.loaderActive) return  <Loader />; // Conditional Rendering!
 			return (
 				<div>
 					<h3  style={{textAlign: 'center'}}> Please click on a movie title to view movie overview </h3>
@@ -191,6 +203,7 @@ class MovieGrid extends Component {
 					
 					
 					<Carousel
+						
 						responsiveLayout={responsive}
 						// arrowRight={customArrowRight}
 						cols={5} rows={3} gap={3}>
@@ -223,7 +236,8 @@ class MovieGrid extends Component {
 									<div className="text" style={{cursor: 'pointer'}}	
 									onClick={() => this.handeClick(currentMovie.movie.name, currentMovie.movie.plot, currentMovie.movie.poster)}
 									>								
-										{currentMovie.movie.name}
+										{currentMovie.movie.name} (
+										{currentMovie.movie.release_year} ) 
 										
 										
 									</div>
