@@ -18,6 +18,7 @@ import Modal from 'react-bootstrap/Modal';
 import Button from 'react-bootstrap/Button';
 
 
+
 class Moviecard extends Component {
     constructor(props) {
         super(props);
@@ -294,7 +295,6 @@ class Moviecard extends Component {
        
     render() {  
    
-    
         const active = this.state.isActive ? "pulse animated" : "";
         const isEnabled = this.canBeSubmitted();
         const {rate} = this.state;
@@ -304,8 +304,8 @@ class Moviecard extends Component {
             console.log(newRating);
         };
 
-        if (this.state.loaderActive) return  <Loader />; // Conditional Rendering!
 
+        if (this.state.loaderActive) return  <Loader />; // Conditional Rendering!
         return (
             <div>
                  {/* Progress bar component */ }
@@ -339,7 +339,7 @@ class Moviecard extends Component {
                                     <h3 style={{color: 'black'}}>Final Recommendation</h3>
                                     &nbsp;&nbsp;&nbsp;
                                     <p style={{color: 'black'}}>1. Hover over a movie to read more information about it.</p>
-                                    <p style={{color: 'black'}}>2. Click on the check or cross icon for each movie to indicate if you <b>know</b> or <b>don't know</b> the movie.</p>
+                                    <p style={{color: 'black'}}>2. Among the ten presented movies, choosethe movie which you <b>like the best </b> by clicking on the 'like best' button.</p>
                                     <p style={{color: 'black'}}>3. Click on the 'Next' button to go to the next step. This button won't be activated till you <b>complete step 2</b>.</p>
                                 </CardBody>
                             </Card>
@@ -413,11 +413,9 @@ class Moviecard extends Component {
                                         <b>Stars: </b> {this.state.activeMovie.movie_stars.slice(0, 40)}
                                     </CardText>
                                     
-                                        
-                                        <button ><img src="check.png" width="12px" height="12px"></img></button>
-                                        &nbsp;&nbsp;&nbsp;
-                                        <button><img src="cross .png" width="12px" height="12px"></img></button>
-
+                                     
+                                    <button variant="secondary" size="lg">Like Best</button>
+                                   
                                 </CardBody>
                             </Card>
                         </div>
@@ -428,7 +426,7 @@ class Moviecard extends Component {
 
                 {/* "next" button  */ }  
                 <div align="right" className="padding">
-                    <Link to="/movies2">
+                    <Link to={{ pathname: "/movies2", state: {vis: this.state.listVis}  }}>
                         <button id="register" type="button" className="btn btn-sm btn-primary"
                                 >Next
                         </button>

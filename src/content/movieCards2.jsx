@@ -64,17 +64,12 @@ class Moviecard2 extends Component {
                                     
 				});
 
-                // random visualization
-                let rand = this.randomVisualization(); 
-                if (rand==0){
-                    this.setState({ graphVis: true});
-                    console.log(this.state.graphVis);
-                } else {
-                    this.setState({ listVis: true})
-                    console.log(this.state.listVis);
-                }
+                console.log(this.props.location.state.vis); // visualization from former component
 
                 this.setState({
+
+                    // get visualization from former component
+                    listVis: this.props.location.state.vis,
                     
                      loaderActive: false,// loader state: change to off
                      movies: response.data ,
@@ -341,8 +336,8 @@ class Moviecard2 extends Component {
                                     <h3 style={{color: 'black'}}>Final Recommendation</h3>
                                     &nbsp;&nbsp;&nbsp;
                                     <p style={{color: 'black'}}>1. Hover over a movie to read more information about it.</p>
-                                    <p style={{color: 'black'}}>2. <b>Rate</b> all the ten movies. If you haven't seen the movie please rate based on the information given.</p>
-                                    <p style={{color: 'black'}}>3. Among the ten presented movies, choosethe movie which you <b>like the best </b> by clicking on the 'like best' button.</p>
+                                    <p style={{color: 'black'}}>2. Click on the check or cross icon for each movie to indicate if you <b>know</b> or <b>don't know</b> the movie.</p>
+                                    <p style={{color: 'black'}}>3. <b>Rate</b> all the ten movies. If you haven't seen the movie please rate based on the information given.</p>
                                     <p style={{color: 'black'}}>4. Click on the 'Next' button to go to the next step. This button won't be activated till you <b>complete steps 2-3</b>.</p>
                                 </CardBody>
                             </Card>
@@ -424,12 +419,15 @@ class Moviecard2 extends Component {
 											size={24}
 											activeColor="#ffd700"
                                             />
-
 									</div>
 
                                     &nbsp;&nbsp;&nbsp;
+
+                                    <button ><img src="check.png" width="12px" height="12px"></img></button>
+                                        &nbsp;&nbsp;&nbsp;
+                                    <button><img src="cross .png" width="12px" height="12px"></img></button>
                                        
-                                        <button>Like Best</button>
+                                        
                                         
 
                                 </CardBody>

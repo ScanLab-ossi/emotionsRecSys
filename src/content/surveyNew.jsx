@@ -28,32 +28,44 @@ class SurveyNew extends Component{
                {
                 "type": "rating",
                 "name": "question1",
-                "title": "All the recommended movies in the final list were similar to each other."
-               },
+                "title": "All the recommended movies in the final list were similar to each other.",
+                "minRateDescription": "Disagree",
+                "maxRateDescription": "Agree"
+            },
                {
                 "type": "rating",
                 "name": "question2",
-                "title": "None of the movies in the recommended list were alike"
+                "title": "None of the movies in the recommended list were alike",
+                "minRateDescription": "Disagree",
+                "maxRateDescription": "Agree"
                },
                {
                 "type": "rating",
                 "name": "question3",
-                "title": "Most movies were from the same genre"
+                "title": "Most movies were from the same genre",
+                "minRateDescription": "Disagree",
+                "maxRateDescription": "Agree"
                },
                {
                 "type": "rating",
                 "name": "question4",
-                "title": "The recommended list of movies suits a broad set of tastes"
+                "title": "The recommended list of movies suits a broad set of tastes",
+                "minRateDescription": "Disagree",
+                "maxRateDescription": "Agree"
                },
                {
                 "type": "rating",
                 "name": "question5",
-                "title": "The recommended movies were from many different genres"
+                "title": "The recommended movies were from many different genres",
+                "minRateDescription": "Disagree",
+                "maxRateDescription": "Agree"
                },
                {
                 "type": "rating",
                 "name": "question6",
-                "title": "The recommendations contained a lot of variety"
+                "title": "The recommendations contained a lot of variety",
+                "minRateDescription": "Disagree",
+                "maxRateDescription": "Agree"
                }
               ],
               "title": "Welcome to the post-task survey!\nPlease rate your agreement with the statements about your experience with your LAST movie option.",
@@ -65,32 +77,44 @@ class SurveyNew extends Component{
                {
                 "type": "rating",
                 "name": "question7",
-                "title": "I liked the movies recommended by the movie recommender"
+                "title": "I liked the movies recommended by the movie recommender",
+                "minRateDescription": "Disagree",
+                "maxRateDescription": "Agree"
                },
                {
                 "type": "rating",
                 "name": "question8",
-                "title": "I found the recommended movies appealing"
+                "title": "I found the recommended movies appealing",
+                "minRateDescription": "Disagree",
+                "maxRateDescription": "Agree"
                },
                {
                 "type": "rating",
                 "name": "question9",
-                "title": "The recommended movies fit my preference"
+                "title": "The recommended movies fit my preference",
+                "minRateDescription": "Disagree",
+                "maxRateDescription": "Agree"
                },
                {
                 "type": "rating",
                 "name": "question10",
-                "title": "The recommended movies were relevant"
+                "title": "The recommended movies were relevant",
+                "minRateDescription": "Disagree",
+                "maxRateDescription": "Agree"
                },
                {
                 "type": "rating",
                 "name": "question11",
-                "title": "The system recommended too many bad movies."
+                "title": "The system recommended too many bad movies.",
+                "minRateDescription": "Disagree",
+                "maxRateDescription": "Agree"
                },
                {
                 "type": "rating",
                 "name": "question12",
-                "title": "I did not like any of the recommended movies."
+                "title": "I did not like any of the recommended movies.",
+                "minRateDescription": "Disagree",
+                "maxRateDescription": "Agree"
                }
               ],
               "title": "Welcome to the post-task survey!Please rate your agreement with the statements about your experience with your LAST movie option.",
@@ -102,37 +126,51 @@ class SurveyNew extends Component{
                {
                 "type": "rating",
                 "name": "question13",
-                "title": "I like the movie I’ve chosen from the final recommendation list."
+                "title": "I like the movie I’ve chosen from the final recommendation list.",
+                "minRateDescription": "Disagree",
+                "maxRateDescription": "Agree"
                },
                {
                 "type": "rating",
                 "name": "question14",
-                "title": "The chosen movie fits my preference."
+                "title": "The chosen movie fits my preference.",
+                "minRateDescription": "Disagree",
+                "maxRateDescription": "Agree"
                },
                {
                 "type": "rating",
                 "name": "question15",
-                "title": "I would recommend my chosen movie to others/friends."
+                "title": "I would recommend my chosen movie to others/friends.",
+                "minRateDescription": "Disagree",
+                "maxRateDescription": "Agree"
                },
                {
                 "type": "rating",
                 "name": "question16",
-                "title": "I was excited about my chosen movie"
+                "title": "I was excited about my chosen movie",
+                "minRateDescription": "Disagree",
+                "maxRateDescription": "Agree"
                },
                {
                 "type": "rating",
                 "name": "question17",
-                "title": "I think I chose the best movie from the options"
+                "title": "I think I chose the best movie from the options",
+                "minRateDescription": "Disagree",
+                "maxRateDescription": "Agree"
                },
                {
                 "type": "rating",
                 "name": "question18",
-                "title": "I know several items that are better than the one I selected"
+                "title": "I know several items that are better than the one I selected",
+                "minRateDescription": "Disagree",
+                "maxRateDescription": "Agree"
                },
                {
                 "type": "rating",
                 "name": "question19",
-                "title": "I would rather watch a different movie from the one I selected"
+                "title": "I would rather watch a different movie from the one I selected",
+                "minRateDescription": "Disagree",
+                "maxRateDescription": "Agree"
                }
               ],
               "title": "Welcome to the post-task survey!Please rate your agreement with the statements about your experience with your LAST movie option.",
@@ -144,27 +182,37 @@ class SurveyNew extends Component{
                {
                 "type": "rating",
                 "name": "question20",
-                "title": "I feel like I was recommended the same movies as everyone else."
+                "title": "I feel like I was recommended the same movies as everyone else.",
+                "minRateDescription": "Disagree",
+                "maxRateDescription": "Agree"
                },
                {
                 "type": "rating",
                 "name": "question21",
-                "title": "The movies that were recommended are very popular movies."
+                "title": "The movies that were recommended are very popular movies.",
+                "minRateDescription": "Disagree",
+                "maxRateDescription": "Agree"
                },
                {
                 "type": "rating",
                 "name": "question22",
-                "title": "I selected the movies that I think are the most popular overall."
+                "title": "I selected the movies that I think are the most popular overall.",
+                "minRateDescription": "Disagree",
+                "maxRateDescription": "Agree"
                },
                {
                 "type": "rating",
                 "name": "question23",
-                "title": "I selected movies that are rather different from what I imagine others would choose."
+                "title": "I selected movies that are rather different from what I imagine others would choose.",
+                "minRateDescription": "Disagree",
+                "maxRateDescription": "Agree"
                },
                {
                 "type": "rating",
                 "name": "question24",
-                "title": "Probably nobody selected the exact same set of movies as me."
+                "title": "Probably nobody selected the exact same set of movies as me.",
+                "minRateDescription": "Disagree",
+                "maxRateDescription": "Agree"
                }
               ],
               "title": "Welcome to the post-task survey!Please rate your agreement with the statements about your experience with your LAST movie option.",
@@ -176,37 +224,51 @@ class SurveyNew extends Component{
                {
                 "type": "rating",
                 "name": "question25",
-                "title": "The movie recommender catered to all of my potential interests"
+                "title": "The movie recommender catered to all of my potential interests",
+                "minRateDescription": "Disagree",
+                "maxRateDescription": "Agree"
                },
                {
                 "type": "rating",
                 "name": "question26",
-                "title": "The movies that were recommended did not reflect my diverse taste in movies."
+                "title": "The movies that were recommended did not reflect my diverse taste in movies.",
+                "minRateDescription": "Disagree",
+                "maxRateDescription": "Agree"
                },
                {
                 "type": "rating",
                 "name": "question27",
-                "title": "The movie recommender seemed to target only a small subset of my interests."
+                "title": "The movie recommender seemed to target only a small subset of my interests.",
+                "minRateDescription": "Disagree",
+                "maxRateDescription": "Agree"
                },
                {
                 "type": "rating",
                 "name": "question28",
-                "title": "The movie recommender treated me as a one-dimensional person."
+                "title": "The movie recommender treated me as a one-dimensional person.",
+                "minRateDescription": "Disagree",
+                "maxRateDescription": "Agree"
                },
                {
                 "type": "rating",
                 "name": "question29",
-                "title": "The lists of recommendations matched a diversity of my preferences."
+                "title": "The lists of recommendations matched a diversity of my preferences.",
+                "minRateDescription": "Disagree",
+                "maxRateDescription": "Agree"
                },
                {
                 "type": "rating",
                 "name": "question30",
-                "title": "The recommended movies were a perfect fit for me on many different levels."
+                "title": "The recommended movies were a perfect fit for me on many different levels.",
+                "minRateDescription": "Disagree",
+                "maxRateDescription": "Agree"
                },
                {
                 "type": "rating",
                 "name": "question31",
-                "title": "The movie recommender seemed to stereotype me in a particular category of viewers."
+                "title": "The movie recommender seemed to stereotype me in a particular category of viewers.",
+                "minRateDescription": "Disagree",
+                "maxRateDescription": "Agree"
                }
               ],
               "title": "Welcome to the post-task survey!Please rate your agreement with the statements about your experience with your LAST movie option.",
@@ -218,32 +280,44 @@ class SurveyNew extends Component{
                {
                 "type": "rating",
                 "name": "question32",
-                "title": "I like using the system."
+                "title": "I like using the system.",
+                "minRateDescription": "Disagree",
+                "maxRateDescription": "Agree"
                },
                {
                 "type": "rating",
                 "name": "question33",
-                "title": "Using the system is a pleasant experience."
+                "title": "Using the system is a pleasant experience.",
+                "minRateDescription": "Disagree",
+                "maxRateDescription": "Agree"
                },
                {
                 "type": "rating",
                 "name": "question34",
-                "title": "I would recommend the system to others."
+                "title": "I would recommend the system to others.",
+                "minRateDescription": "Disagree",
+                "maxRateDescription": "Agree"
                },
                {
                 "type": "rating",
                 "name": "question35",
-                "title": "I can find better movies using the system."
+                "title": "I can find better movies using the system.",
+                "minRateDescription": "Disagree",
+                "maxRateDescription": "Agree"
                },
                {
                 "type": "rating",
                 "name": "question36",
-                "title": "I would quickly abandon using the system."
+                "title": "I would quickly abandon using the system.",
+                "minRateDescription": "Disagree",
+                "maxRateDescription": "Agree"
                },
                {
                 "type": "rating",
                 "name": "question37",
-                "title": "I would use the system more often if possible."
+                "title": "I would use the system more often if possible.",
+                "minRateDescription": "Disagree",
+                "maxRateDescription": "Agree"
                }
               ],
               "title": "Welcome to the post-task survey!Please rate your agreement with the statements about your experience with your LAST movie option.",
@@ -255,7 +329,7 @@ class SurveyNew extends Component{
                {
                 "type": "text",
                 "name": "question38",
-                "title": "Joy"
+                "title": "Joy",
                },
                {
                 "type": "text",
