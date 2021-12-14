@@ -2,6 +2,7 @@ const mongoose = require("mongoose");
 
 const Schema = mongoose.Schema;
 
+// movies schema
 const emotionscollectionnew = new Schema({   
   titleId: { type: String},
   name: { type: String},
