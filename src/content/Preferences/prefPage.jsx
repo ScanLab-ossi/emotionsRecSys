@@ -9,6 +9,8 @@ import MovieGrid from "./movieGrid";
 import ProgressBarComponent from "../progressBarComponent";
 import Loader from '../loader';
 import 'react-circular-progressbar/dist/styles.css';
+import {APIACTION, Action} from "../constants";
+import axios from "axios";
 
 
 class PrefPage extends Component {
@@ -18,6 +20,8 @@ class PrefPage extends Component {
 
 
         this.state = {
+
+            timestamp: 0,
             loaderActive: true,
             stepsEnabled: true,
             initialStep: 0,
@@ -52,16 +56,48 @@ class PrefPage extends Component {
   
 
   componentDidMount(){
-    this.setState({loaderActive: false});
+    this.setState({
+        loaderActive: false,
+        timestamp: Math.floor(Date.now() / 1000)
+    });
     if (window.innerWidth < 700) {
         alert('Please increase window size for proper visualization!');
-        }
+    }
+      
+  }
+
+  componentWillUnmount(){
+    // time in page
+    let page= "PrefPage";
+    let user = "connected user";
+    let movie = "";
+    let action = "time";
+    let value = Math.floor(Date.now() / 1000)-this.state.timestamp;
+    console.log("page: " + page, ", user: " + user, ", movie: " + movie, ", action: " + action, ", value: " +value);
+    // TODO: save in mongo DB. 
+    this.timeInPageToMongo(page,user,movie,action,value);
+}
+
+// data will be sent from here -> router -> server -> mongo db
+timeInPageToMongo(cpage,cuser,cmovie,caction,cvalue) {
+
+    const newAction = {
+        page: cpage,
+        user: cuser,
+        movie: cmovie,
+        action: caction,
+        value: cvalue
+    }
+   
+    axios.post('http://localhost:5000/create', newAction)
     
   }
 
+
+
   
   render() {  
-       
+
         const {
             stepsEnabled,
             steps,
@@ -97,6 +133,7 @@ class PrefPage extends Component {
                     <span> Ranked Movies: </span>
                     <span id="NumberOfRankedMovies"><i>{this.state.count}</i></span>
                     <span><i>of 20</i></span>
+                    <span> </span>
                 </div>
                 <Link to="/movies">
                     <Button disabled={disabled} variant="primary" style={{float:'right', marginRight: 90}}>Next</Button>
@@ -107,7 +144,9 @@ class PrefPage extends Component {
     }
 
       onExit = () => {
-        this.setState(() => ({stepsEnabled: false}));
+        this.setState(() => ({
+            stepsEnabled: false
+        }));     
     };
 }
 

@@ -35,23 +35,16 @@ export const Movie = props => (
 		<td>{props.movie.release_year}</td>
 		<td>{props.movie.poster}</td>
 	</tr>
-/*
+);
+
+export const APIACTION =  'http://localhost:4000/useractions/create';
+
+export const Action = props => (
 	<tr>
-		<td>{props.movie.rssa_id}</td>
-		<td>{props.movie.movie_id}</td>
-		<td>{props.movie.imdb_id}</td>
-		<td>{props.movie.title}</td>
-		<td>{props.movie.year}</td>
-		<td>{props.movie.runtime}</td>
-		<td>{props.movie.genre}</td>
-		<td>{props.movie.aveRating}</td>
-		<td>{props.movie.director}</td>
-		<td>{props.movie.writer}</td>
-		<td>{props.movie.description}</td>
-		<td>{props.movie.cast}</td>
-		<td>
-			<img src={props.movie.poster} alt={props.movie.title} width="100"/>
-		</td>
+		<td>{props.action.page}</td>
+		<td>{props.movie.user}</td>
+		<td>{props.movie.movie}</td>
+		<td>{props.movie.action}</td>
+		<td>{props.movie.value}</td>	
 	</tr>
-	*/
 );

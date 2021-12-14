@@ -17,8 +17,6 @@ import 'react-circular-progressbar/dist/styles.css';
 import Modal from 'react-bootstrap/Modal';
 import Button from 'react-bootstrap/Button';
 
-
-
 class Moviecard extends Component {
     constructor(props) {
         super(props);
@@ -62,8 +60,6 @@ class Moviecard extends Component {
         axios
             .get(API)
             .then(response => {
-                console.log(response);
-                console.log(response.data);
                 response.data.map(movie => {
 					movie_map.push({
 						"movie": movie,
