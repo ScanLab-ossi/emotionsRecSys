@@ -1,14 +1,7 @@
 import React, { Component } from 'react';
-import {
-  Navbar,
-  NavbarBrand
-} from 'reactstrap';
 import { Link }  from "react-router-dom";
 import Button from 'react-bootstrap/Button';
 import 'bootstrap/dist/css/bootstrap.min.css';
-import "react-step-progress-bar/styles.css";
-import { ProgressBar, Step } from "react-step-progress-bar";
-import ProgressBarComponent from "./progressBarComponent";
 import Modal from 'react-bootstrap/Modal';
 
 
@@ -24,9 +17,7 @@ class Instructions extends Component {
       const show = this.state.show;
         return ( 
        <div>
-<ProgressBarComponent percentComplete={30} />
 
-         <br/>
 
       <div className="instructions-page">   
      

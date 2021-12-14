@@ -37,10 +37,11 @@ class Welcome extends Component {
               this study will be valued.
             </p>
             <p>
-              It will take you about 10-15 minutes to complete the four steps of the study:
+              It will take you about 10-15 minutes to complete the five steps of the study:
             </p>
             <ol>
               <li>Introduction</li>
+              <li>Complete personality test </li>
               <li>Instructions for the study</li>
               <li>Interact with movie recommender</li>
               <li>Complete survey describing your experience</li>
@@ -106,7 +107,7 @@ class Welcome extends Component {
                 Exit
               </Button>
             </Link>
-            <Link to="/inst">
+            <Link to="/personalityTest">
               <Button variant="primary" disabled={this.state.disabled}>
                 Continue
               </Button>

@@ -107,9 +107,7 @@ class Moviecard extends Component {
                                 let selectedMovieName = config.w.globals.seriesNames[config.seriesIndex] 
                                 // set state "current movie name" by ^
                                 this.setState({ activeMovieName: selectedMovieName});
-                                console.log(this.state.activeMovieName);
                                 // call function that returns movie by name
-                                console.log(this.state.movies);
                                 let thisMovie = this.state.movies.find(m => m.name === selectedMovieName );
                                 // then call this.handlehover
                                 this.handleHover(true,thisMovie);          

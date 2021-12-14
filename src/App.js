@@ -10,6 +10,7 @@ import Survey from "./content/survey";
 import SurveyNew from './content/surveyNew';
 import Exit from './content/ExitPage';
 import MoviesList from "./content/movies-list.component";
+import PersonalityTest from './content/personalityTest';
 import './App.css';
 
 
@@ -28,6 +29,7 @@ function App() {
             <Router>
                 <Switch>
                     <Route exact path="/" component={Welcome}/>
+                    <Route path="/personalityTest" component={PersonalityTest}/>
                     <Route path="/inst" component={Instructions}/>
                     <Route path="/pref" component={Preferences}/>
                     <Route path="/movies" component={Movies}/>
