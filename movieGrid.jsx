@@ -2,21 +2,11 @@ import React, {Component} from 'react';
 import StarRatings from 'react-star-ratings';
 import Carousel from 'react-grid-carousel'
 import axios from "axios";
-import {API, Movie} from "../constants";
 import Modal from 'react-bootstrap/Modal';
-import { Link }  from "react-router-dom";
 import Button from 'react-bootstrap/Button';
-import { useState, useEffect } from 'react';
 import Loader from '../loader';
 import 'react-circular-progressbar/dist/styles.css';
 
-const carouselArrowRight = ({ isActive }) => (
-	<span className={"carouselArrowRight"} />
-);
-
-const carouselArrayLeft = ({ isActive }) => (
-	<span className={"carouselArrowLeft"} />
-);
 
 const responsive = [
 	{ breakpoint: 4000, cols: 12, rows: 5, gap: 9, loop: true },
@@ -33,6 +23,9 @@ class MovieGrid extends Component {
 	constructor(props) {
 		super(props)
 		this.state = {
+			synopsisTimes: [],
+			modalTimeStamp1: 0,
+			modalTimeStamp2: 0,
 			page: "Pref",
             user: "connected user",
 			userRating: [],
@@ -42,88 +35,22 @@ class MovieGrid extends Component {
 			curMovieTitle: "",
 			curMovieSynopsis: "",
 			curMoviePoster: "",
+			curMovieId: "",
 			showOverView: false,
 			showModal: false,
 			movies_r: [],
 			currentPage: 1
 		}
 	}
-	componentDidMount() {
-		let movie_map = [];
-		axios
-			.get(API)
-			.then(response => {
-				response.data.map(movie => {
-					movie_map.push({
-						"movie": movie,
-						"title": movie.name,
-						"rating": 0
-					});
-				});
-				this.setState({
-					movies_: movie_map,
-					loaderActive: false
-					// user: user id 
-				})
-			})
-			.catch(error => {
-				console.log(error);
-			});
-		
-		if (this.state.visited.length <= 5) {
-			this.updateVisited();
-					
-		}
-		
-	}
 
-	updateVisited = () => {
-		const randomCount = 5;
-		let randomMovies = [];
-		if (this.state.visited.length <= randomCount) {
-			randomMovies = this.getRandomMovies(this.state.movies_, randomCount);
-			this.setState({
-				visited: randomMovies
-			});			
-		}	
-	}
 
-	movieList() {
-		return this.state.movies.map(currentmovie => {
-			return (
-				<Movie
-					movie={currentmovie}
-					// deleteMovie={this.deleteMovie}
-					key={currentmovie._id}
-				/>
-			);
-		});
-	}
 
-	onSubmit(e) {
-		e.preventDefault();
-
-		// const exercise = {
-		//   username: this.state.username,
-		//   description: this.state.description,
-		//   duration: this.state.duration,
-		//   date: this.state.date
-		// };
-		axios
-			.get(API + this.state.mId)
-			.then(response => {
-				this.setState({movies: response.data});
-			})
-			.catch(error => {
-				console.log(error);
-			});
-	}
 
 	// save new rating to mongo db 
 	changeRating = (newRating, movieid) => {
 		//console.log(newRating);
 		//console.log(movieid);
-		let newData= {movie: movieid, rating: newRating};
+		let newData= {item_id: movieid, rating: newRating};
 		this.setState({
 			userRating: [...this.state.userRating, newData]
 		});
@@ -154,12 +81,11 @@ class MovieGrid extends Component {
 	}
 
 	// data will be sent from here -> router -> server -> mongo db
-    postToMongo(cpage,cuser,cmovie,caction,cvalue) {
+    postToMongo(cpage,cuser,caction,cvalue) {
 
         const newAction = {
             page: cpage,
             user: cuser,
-            movie: cmovie,
             action: caction,
             value: cvalue
         }
@@ -167,8 +93,8 @@ class MovieGrid extends Component {
     }
 
 	componentWillUnmount(){
-		//console.log(this.state.userRating);
-		this.postToMongo(this.state.page,this.state.user,this.state.movie,"rating",this.state.userRating);
+		this.postToMongo(this.state.page,this.state.user,"rating",this.state.userRating);
+		this.postToMongo(this.state.page,this.state.user,"synopsis",this.state.synopsisTimes);
 	}
 	
 
@@ -185,23 +111,26 @@ class MovieGrid extends Component {
 
 	
 
-	handeClick = (currentMovietitle, currentMovieSynopsis,currentMoviePoster)=>{
+	handeClick = (currentMovietitle, currentMovieSynopsis,currentMoviePoster, currentMovieId)=>{
 		
 		this.setState({
+			modalTimeStamp1: Math.floor(Date.now() / 1000),
 			showOverView: true,
 			curMovieTitle: currentMovietitle,
 			curMovieSynopsis: currentMovieSynopsis,
+			curMovieId: currentMovieId,
 			showModal: true,
 		});
 	}
 
 	closeModal = ()=>{
+		let userTime = {item_id: this.state.curMovieId, time: Math.floor(Date.now() / 1000)-this.state.modalTimeStamp1};
+
 		this.setState({
-			showModal: false
+			showModal: false,
+			synopsisTimes: [...this.state.synopsisTimes, userTime]
 		});
 	}
-
-	
 
 	render() {	
 	
@@ -263,14 +192,14 @@ class MovieGrid extends Component {
 													starSpacing="1px"
 													changeRating={this.changeRating}
 													numberOfStars={5}
-													name={currentMovie.movie.name}
+													name={currentMovie.movie.titleId}
 													
 													/>
 											</div>
 										</div>
 									</div>
 									<div className="text" style={{cursor: 'pointer'}}	
-									onClick={() => this.handeClick(currentMovie.movie.name, currentMovie.movie.plot, currentMovie.movie.poster)}
+									onClick={() => this.handeClick(currentMovie.movie.name, currentMovie.movie.plot, currentMovie.movie.poster, currentMovie.movie.titleId)}
 									>								
 										{currentMovie.movie.name} (
 										{currentMovie.movie.release_year} ) 
