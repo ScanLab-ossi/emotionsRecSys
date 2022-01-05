@@ -3,6 +3,7 @@ import { Link }  from "react-router-dom";
 import Button from 'react-bootstrap/Button';
 import 'bootstrap/dist/css/bootstrap.min.css';
 import Modal from 'react-bootstrap/Modal';
+import ProgressBarComponent from "./progressBarComponent";
 
 
 class Instructions extends Component {
@@ -16,9 +17,12 @@ class Instructions extends Component {
     render() { 
       const show = this.state.show;
         return ( 
+<div>
+          <ProgressBarComponent percentComplete={35} />
+          &nbsp;&nbsp;&nbsp;
        <div>
 
-
+    
       <div className="instructions-page">   
      
   <div className="row">
@@ -67,13 +71,14 @@ class Instructions extends Component {
             </p>
           </Modal.Body>
           <Modal.Footer>  
-          <Link to="/pref">
+          <Link to="/movieGrid">
               <Button variant="primary" size="lg"  style={{float: 'right', marginRight: 0}}>            
                 Begin
               </Button>
             </Link>
           </Modal.Footer>
         </Modal>
+     </div>
      </div>
       
          );

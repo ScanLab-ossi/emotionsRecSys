@@ -3,24 +3,59 @@ import "react-step-progress-bar/styles.css";
 import ProgressBarComponent from "./progressBarComponent";
 import "survey-react/survey.css";
 import * as Survey from "survey-react";
-import Button from 'react-bootstrap/Button';
+import axios from "axios";
 import {Link} from "react-router-dom";
-import Instructions from './Instructions';
+import Button from 'react-bootstrap/Button';
 
 class PersonalityTest extends Component{
     constructor(props){
         super(props)
         this.state={
-            isComplete: false
+            page: "PersonalityTest",
+            user: "connected user",
+            isComplete: false,
+            timestamp: 0,
         }
         this.onCompleteComponent = this.onCompleteComponent.bind(this);
     }
 
-    onCompleteComponent=()=>{
+    // post to mongo db personality test results
+    onCompleteComponent=(survey, options)=>{
+        
+        this.postToMongo(this.state.page,this.state.user,"surveyResults",survey.data);
+
         this.setState({
             isComplete: true
         })
     }
+
+    componentDidMount(){
+        this.setState({
+            timestamp: Math.floor(Date.now() / 1000)
+            // user: user id 
+        });
+    }
+
+    componentWillUnmount(){
+        // time in page
+        let value = Math.floor(Date.now() / 1000)-this.state.timestamp;
+        this.postToMongo(this.state.page,this.state.user,"time",value);
+    }
+
+    // data will be sent from here -> router -> server -> mongo db
+    postToMongo(cpage,cuser,caction,cvalue) {
+
+        const newAction = {
+            page: cpage,
+            user: cuser,
+            action: caction,
+            value: cvalue
+        }
+        axios.post('http://localhost:5000/create', newAction);
+    }
+
+    
+    
 
     render(){
         
@@ -505,14 +540,18 @@ class PersonalityTest extends Component{
                  
                />
            ) : null
-           var onSurveyCompletion = this.state.isComplete ? (
+           var onSurveyCompletion = this.state.isComplete ? (    
                <div>
-                   <Instructions />
-                </div>
-               
-               
-               // TODO : connect with mongoDB
-               // TODO : check why triggers don't work
+                   <p  style={{textAlign: 'center'}}>Thank you for completing the personality test</p>
+                   <p  style={{textAlign: 'center'}}>Please click to continue</p>
+                   <Link to="/inst" >
+                        <Button variant="primary" size="lg"  style={{float: 'right', marginRight: 0}}>            
+                            Continue
+                        </Button>
+                    </Link> 
+               </div>   
+                 
+ 
            ) : null
 
         

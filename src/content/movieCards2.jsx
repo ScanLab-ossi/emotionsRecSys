@@ -21,13 +21,24 @@ import Button from 'react-bootstrap/Button';
 class Moviecard2 extends Component {
     constructor(props) {
         super(props);
-        this.onChangeMovieId = this.onChangeMovieId.bind(this);
-        this.onSubmit = this.onSubmit.bind(this);
         this.handleHover = this.handleHover.bind(this);
+        this.handleHoverStop = this.handleHoverStop.bind(this);
 
         this.state = {
+            recommendations: [],
+            userExp: {},
+            ratings: [],
+            knowMovies: [],
+            synopsisTimes: [],
+			modalTimeStamp1: 0,
+			modalTimeStamp2: 0,
+            currentTitleId: "",
+            hoverTimes: [],
+            hoverTime: 0,
+            user: "connected user",
+            page: "Movies2",
+            timestamp: 0,
             loaderActive: true,
-            movies: [],
             mId: "",
             rate: '',
             isHovered: false,
@@ -52,189 +63,160 @@ class Moviecard2 extends Component {
     }
   
     componentDidMount() {
-        let movie_map = [];
+
+        // get all data of these recommendation ids from mongo db
+        let urlArr = this.props.location.state.urlArr;       
+        let promiseArr= urlArr.map(url=> axios.get(url));
+        let recommendations_ = [];
+		var that = this;
   
-        axios
-            .get(API)
-            .then(response => {
-                response.data.map(movie => {
-					movie_map.push({
-						"movie": movie,
-					});
-                                    
-				});
+        axios.all(promiseArr)
+        .then(function(results){
+            recommendations_ = results.map(r=> r.data[0]); 
+			that.setState({ recommendations: recommendations_ });	
 
-                console.log(this.props.location.state.vis); // visualization from former component
-
-                this.setState({
-
-                    // get visualization from former component
-                    listVis: this.props.location.state.vis,
+            // random visualization (ADD this.props.location.state.exp.DIV WHEN CONNECTED TO LIJJIE)
+            if (that.props.location.state.exp.vis === "graph latent"){                 
+                    that.setState({ graphVis: true});
+                    // add diversification
+            } 
+            if (that.props.location.state.exp.vis === "graph emotions"){
+                      that.setState({ graphVis: true});
+                    // add diversification
+            }
+            if (that.props.location.state.exp.vis === "list"){
+                that.setState({ graphVis: false}) 
+                    // add diversification
+            }
                     
-                     loaderActive: false,// loader state: change to off
-                     movies: response.data ,
+            that.setState({
 
-                     seriesForGraph: [{name: String(movie_map.map(currentMovie => (currentMovie.movie.name)).slice(0, 1)),data: [[-7,-5],]},
-                     {name: String(movie_map.map(currentMovie => (currentMovie.movie.name)).slice(1, 2)),data: [[5, 9],]},
-                     {name: String(movie_map.map(currentMovie => (currentMovie.movie.name)).slice(2, 3)),data: [[7, 5],]},
-                     {name: String(movie_map.map(currentMovie => (currentMovie.movie.name)).slice(3, 4)),data: [[-4, -6],]},
-                     {name: String(movie_map.map(currentMovie => (currentMovie.movie.name)).slice(4, 5)),data: [[5, -5],]},
-                     {name: String(movie_map.map(currentMovie => (currentMovie.movie.name)).slice(5, 6)),data: [[-7, 5],]},
-                     {name: String(movie_map.map(currentMovie => (currentMovie.movie.name)).slice(6, 7)),data: [[4, 4],]},
-                     {name: String(movie_map.map(currentMovie => (currentMovie.movie.name)).slice(7, 8)),data: [[2, 6],]},
-                     {name: String(movie_map.map(currentMovie => (currentMovie.movie.name)).slice(8, 9)),data: [[1, 8],]},
-                     {name: String(movie_map.map(currentMovie => (currentMovie.movie.name)).slice(9, 10)),data: [[-8, 0],]}
-                    ],
-                    
-                    optionsForGraph: {
-                        chart: {
-
-                          events: {
-                              /*
-                            markerClick: (event, chartContext, config)=> {
-     
-                            },*/
-
+                // user: user id
+                userExp: that.props.location.state.exp, // user experiment
+                timestamp: Math.floor(Date.now() / 1000), // time stamp when starting component 
+                loaderActive: false,// loader state: change to off
+                        
+                seriesForGraph: [{name: String(recommendations_.map(currentMovie => (currentMovie.name)).slice(0, 1)),data: [[7,5],]},
+                        {name: String(recommendations_.map(currentMovie => (currentMovie.name)).slice(1, 2)),data: [[5, 9],]},
+                        {name: String(recommendations_.map(currentMovie => (currentMovie.name)).slice(2, 3)),data: [[7, 5],]},
+                        {name: String(recommendations_.map(currentMovie => (currentMovie.name)).slice(3, 4)),data: [[4, 6],]},
+                        {name: String(recommendations_.map(currentMovie => (currentMovie.name)).slice(4, 5)),data: [[5, 5],]},
+                        {name: String(recommendations_.map(currentMovie => (currentMovie.name)).slice(5, 6)),data: [[7, 7],]},
+                        {name: String(recommendations_.map(currentMovie => (currentMovie.name)).slice(6, 7)),data: [[4, 4],]},
+                        {name: String(recommendations_.map(currentMovie => (currentMovie.name)).slice(7, 8)),data: [[2, 6],]},
+                        {name: String(recommendations_.map(currentMovie => (currentMovie.name)).slice(8, 9)),data: [[1, 8],]},
+                        {name: String(recommendations_.map(currentMovie => (currentMovie.name)).slice(9, 10)),data: [[8, 2],]}
+                        ],
+                        
+                optionsForGraph: {
+                    chart: {
+                        events: {
                             dataPointMouseEnter: (event, chartContext, config)=> {
                                 event.path[0].style.cursor = "pointer";
-
+                                let selectedMovieName = config.w.globals.seriesNames[config.seriesIndex]  
+                                that.setState({ activeMovieName: selectedMovieName}); // set state "current movie name" by ^                           
+                                let thisMovie = recommendations_.find(m=> m.name===selectedMovieName ); // call function that returns movie by name
+                                that.handleHover(true,thisMovie); // then call this.handlehover         
+                                },
+                                
+                            dataPointMouseLeave: (event, chartContext, config)=> {
                                 let selectedMovieName = config.w.globals.seriesNames[config.seriesIndex] 
-                                // set state "current movie name" by ^
-                                this.setState({ activeMovieName: selectedMovieName});
-                                console.log(this.state.activeMovieName);
-                                // call function that returns movie by name
-                                console.log(this.state.movies);
-                                let thisMovie = this.state.movies.find(m => m.name === selectedMovieName );
-                                // then call this.handlehover
-                                this.handleHover(true,thisMovie);          
-                            }                          
-                          },
-
-                         
-
-                          height: 500,
-                          type: 'scatter',
-                          animations: {
+                                let thisMovie = recommendations_.find(m=> m.name===selectedMovieName );
+                                that.handleHoverStop(false,thisMovie);
+                            }
+                        },
+                        height: 500,
+                        type: 'scatter',
+                        animations: {
                             enabled: true,
-                          },
-                          zoom: {
+                        },
+                        zoom: {
                             enabled: false,
-                          },
-                          toolbar: {
+                        },
+                        toolbar: {
                             show: true
-                          }
-                        },
-                        xaxis: {
-                          tickAmount: 10,
-                          min: -10,
-                          max: 10,
-                          labels:{
-                              formatter: (v)=>{
-                                  this.setState({ currentX: v});
-                                  return v;
-                              }
-                          }
-                        },
-                        yaxis: {
-                          tickAmount: 10,
-                          min: -10,
-                          max: 10,
-                          labels:{
+                        }
+                    },
+                    xaxis: {
+                        tickAmount: 10,
+                        min: 0,
+                        max: 10,
+                        labels:{
                             formatter: (v)=>{
-                                this.setState({ currentY: v});
+                                that.setState({ currentX: v});
                                 return v;
                             }
                         }
-                        },
-                        markers: {
-                          size: 20,
-                         
-                          
-                        },
-                        fill: {
-                          type: 'image',
-                          opacity: 1,
-                          image: {
-                            src: [String(movie_map.map(currentMovie => (URL.createObjectURL(
-                                new Blob([Buffer.from(currentMovie.movie.poster,"base64").buffer], { type: 'image/png' })))).slice(0, 1)),
-                                  String(movie_map.map(currentMovie => (URL.createObjectURL(
-                                    new Blob([Buffer.from(currentMovie.movie.poster,"base64").buffer], { type: 'image/png' })))).slice(1, 2)),
-                                  String(movie_map.map(currentMovie => (URL.createObjectURL(
-                                    new Blob([Buffer.from(currentMovie.movie.poster,"base64").buffer], { type: 'image/png' })))).slice(2, 3)),
-                                  String(movie_map.map(currentMovie => (URL.createObjectURL(
-                                    new Blob([Buffer.from(currentMovie.movie.poster,"base64").buffer], { type: 'image/png' })))).slice(3, 4)),
-                                  String(movie_map.map(currentMovie => (URL.createObjectURL(
-                                    new Blob([Buffer.from(currentMovie.movie.poster,"base64").buffer], { type: 'image/png' })))).slice(4, 5)),
-                                  String(movie_map.map(currentMovie => (URL.createObjectURL(
-                                    new Blob([Buffer.from(currentMovie.movie.poster,"base64").buffer], { type: 'image/png' })))).slice(5, 6)),
-                                  String(movie_map.map(currentMovie => (URL.createObjectURL(
-                                    new Blob([Buffer.from(currentMovie.movie.poster,"base64").buffer], { type: 'image/png' })))).slice(6, 7)),
-                                  String(movie_map.map(currentMovie => (URL.createObjectURL(
-                                    new Blob([Buffer.from(currentMovie.movie.poster,"base64").buffer], { type: 'image/png' })))).slice(7, 8)),
-                                  String(movie_map.map(currentMovie => (URL.createObjectURL(
-                                    new Blob([Buffer.from(currentMovie.movie.poster,"base64").buffer], { type: 'image/png' })))).slice(8, 9)),
-                                  String(movie_map.map(currentMovie => (URL.createObjectURL(
-                                    new Blob([Buffer.from(currentMovie.movie.poster,"base64").buffer], { type: 'image/png' })))).slice(9, 10)) ],
-                            width: 40,
-                            height: 40
-                          }
-                        },
-                        
-                      }                 
-                    });
-                    
-            })
-            .catch(error => {
-                console.log(error);
-                
-            });
+                    },
+                    yaxis: {
+                        tickAmount: 10,
+                        min: 0,
+                        max: 10,
+                        labels:{
+                            formatter: (v)=>{
+                                that.setState({ currentY: v});
+                                return v;
+                            }
+                        }
+                    },
+                    markers: {
+                        size: 20,                        
+                    },
+
+                    fill: {
+                        type: 'image',
+                        opacity: 1,
+                        image: {
+                            src: [String(recommendations_.map(currentMovie => (URL.createObjectURL(
+                                    new Blob([Buffer.from(currentMovie.poster,"base64").buffer], { type: 'image/png' })))).slice(0, 1)),
+                                    String(recommendations_.map(currentMovie => (URL.createObjectURL(
+                                        new Blob([Buffer.from(currentMovie.poster,"base64").buffer], { type: 'image/png' })))).slice(1, 2)),
+                                    String(recommendations_.map(currentMovie => (URL.createObjectURL(
+                                        new Blob([Buffer.from(currentMovie.poster,"base64").buffer], { type: 'image/png' })))).slice(2, 3)),
+                                    String(recommendations_.map(currentMovie => (URL.createObjectURL(
+                                        new Blob([Buffer.from(currentMovie.poster,"base64").buffer], { type: 'image/png' })))).slice(3, 4)),
+                                    String(recommendations_.map(currentMovie => (URL.createObjectURL(
+                                        new Blob([Buffer.from(currentMovie.poster,"base64").buffer], { type: 'image/png' })))).slice(4, 5)),
+                                    String(recommendations_.map(currentMovie => (URL.createObjectURL(
+                                        new Blob([Buffer.from(currentMovie.poster,"base64").buffer], { type: 'image/png' })))).slice(5, 6)),
+                                    String(recommendations_.map(currentMovie => (URL.createObjectURL(
+                                        new Blob([Buffer.from(currentMovie.poster,"base64").buffer], { type: 'image/png' })))).slice(6, 7)),
+                                    String(recommendations_.map(currentMovie => (URL.createObjectURL(
+                                        new Blob([Buffer.from(currentMovie.poster,"base64").buffer], { type: 'image/png' })))).slice(7, 8)),
+                                    String(recommendations_.map(currentMovie => (URL.createObjectURL(
+                                        new Blob([Buffer.from(currentMovie.poster,"base64").buffer], { type: 'image/png' })))).slice(8, 9)),
+                                    String(recommendations_.map(currentMovie => (URL.createObjectURL(
+                                        new Blob([Buffer.from(currentMovie.poster,"base64").buffer], { type: 'image/png' })))).slice(9, 10)) ],
+                        width: 40,
+                        height: 40
+                        }
+                    },                      
+                }                 
+            },()=>console.log("Experiment: visualization: " + that.state.userExp.vis
+            + ", diversification: "+ that.state.userExp.div)); // set state callback function         
+        });          
     }
+
 
     handleHover(isShown, activeMovie){
         this.setState(prevState => ({
             setIsShown: isShown,
             activeMovie: activeMovie,
-            isHovered: !prevState.isHovered
-        }));
+            isHovered: !prevState.isHovered,
+            hoverTime: Math.floor(Date.now() / 1000),
+            currentTitleId: activeMovie.titleId
+        }));   
     };
 
-    movieList() {
-        return this.state.movies.map(currentmovie => {
-            return (
-                <Movie movie={currentmovie}
-                    // deleteMovie={this.deleteMovie}
-                    key={currentmovie._id}
-                />
-            );
-        });
-    }
-  
-    onChangeMovieId(e) {
+    handleHoverStop(isShown, activeMovie){
+        
+        let hoverTime_ = Math.floor(Date.now() / 1000)-this.state.hoverTime;
+        let userHover = {item_id: this.state.currentTitleId, hover: hoverTime_};
         this.setState({
-            mId: e.target.value
-        });
+			hoverTimes: [...this.state.hoverTimes, userHover]
+		});   
     }
   
-    onSubmit(e) {
-        e.preventDefault();
-
-      // const exercise = {
-      //   username: this.state.username,
-      //   description: this.state.description,
-      //   duration: this.state.duration,
-      //   date: this.state.date
-      // };
-        axios
-            .get(API + this.state.mId)
-            .then(response => {
-                this.setState({ movies: response.data });
-
-            })
-            .catch(error => {
-                console.log(error);
-            });
-    }
-
     handleShow = ()=>{
         this.setState({
             isActive: true
@@ -247,43 +229,10 @@ class Moviecard2 extends Component {
         })
     };
 
-    handleHover(isShown, activeMovie){
-        this.setState(prevState => ({
-            setIsShown: isShown,
-            activeMovie: activeMovie,
-            isHovered: !prevState.isHovered
-        }));
-    };
-    
-    handleRateChange = evt => {
-        this.setState({ rate: evt.target.value });
-    };
-
-    handleRateChange1 = evt => {
-        this.setState({ rate2: evt.target.value });
-    };
-
-    handleSubmit = evt => {
-        const { rate } = this.state;
-        const { rate2 } = this.state;
-        alert(`Signed up with rate: ${rate}`);
-    };
-
-    canBeSubmitted() {
-        const {rate} = this.state;
-        const {rate2} = this.state;
-        return rate.length, rate2.length;
-    }
-
-    randomVisualization(){
-        let rand = Math.floor(Math.random()*2);
-        console.log(rand);
-        return rand;
-    }
-
-    handeClick = (currentMovieSynopsis)=>{
-		
+    handeClick = (currentMovieSynopsis,currentMovieId)=>{		
 		this.setState({
+            currentTitleId: currentMovieId,
+            modalTimeStamp1: Math.floor(Date.now() / 1000),
 			showModal: true,
             showOverView: true,
             curMovieSynopsis: currentMovieSynopsis
@@ -291,20 +240,87 @@ class Moviecard2 extends Component {
 	}
 
     closeModal = ()=>{
+        let userTime = {item_id: this.state.currentTitleId, time: Math.floor(Date.now() / 1000)-this.state.modalTimeStamp1};
+
 		this.setState({
-			showModal: false
+			showModal: false,
+            synopsisTimes: [...this.state.synopsisTimes, userTime]
 		});
 	}
 
+    componentWillUnmount(){
+        
+        let value = Math.floor(Date.now() / 1000)-this.state.timestamp; // time in page
+   
+        this.postToMongo(this.state.page,this.state.user,"time",value); // post to mongo user time in page
+        this.postToMongo(this.state.page,this.state.user,"hovers",this.state.hoverTimes); // post to mongo user hover times
+        this.postToMongo(this.state.page,this.state.user,"synopsis",this.state.synopsisTimes); // post to mongo user synopsis times
+        this.postToMongo(this.state.page,this.state.user,"know movies",this.state.knowMovies); // post to mongo movies the user knows / doesnt know
+        this.postToMongo(this.state.page,this.state.user,"rating",this.state.ratings); // post to mongo recommendation ratings
+
+    }
+
+    // onClick "check"/"cross" button
+    knowMovie(trueOrFalse){
+
+        let knowMovie= {item_id: this.state.currentTitleId, know: trueOrFalse};
+    
+        // if the list includes this movie id, but with the value false, replace
+        if (this.state.knowMovies.some(e=>e.item_id=== this.state.currentTitleId && e.know === !trueOrFalse)){
+            this.setState(prevState => {
+                let newData = prevState.knowMovies;
+                let oldValue = newData.find(d => d.item_id === knowMovie.item_id);
+                Object.assign(oldValue, knowMovie);
+                return {knowMovies: newData};
+            })
+        }
+
+        // if new record- append to list
+        if(!this.state.knowMovies.some(e=>e.item_id=== this.state.currentTitleId)){
+            this.setState({
+                knowMovies: [...this.state.knowMovies, knowMovie]
+            });
+            
+        }
+    }
+
+
+
+
+    // data will be sent from here -> router -> server -> mongo db
+    postToMongo(cpage,cuser,caction,cvalue) {
+
+        const newAction = {
+            page: cpage,
+            user: cuser,
+            action: caction,
+            value: cvalue
+        }
+        axios.post('http://localhost:5000/create', newAction);
+    }
+
 
     render() {    
-        const active = this.state.isActive ? "pulse animated" : "";
-        const isEnabled = this.canBeSubmitted();
-        const {rate} = this.state;
-        const {rate2} = this.state;
 
         const ratingChanged = (newRating) => {
-            console.log(newRating);
+            let rating= {item_id: this.state.currentTitleId, userRating: newRating};
+          
+            // if the list includes this movie id, but with the value false, replace
+            if (this.state.ratings.some(e=>e.item_id=== this.state.currentTitleId && e.userRating !== newRating)){
+                 this.setState(prevState => {
+                    let newData = prevState.ratings;
+                    let oldValue = newData.find(d => d.item_id === rating.item_id);
+                    Object.assign(oldValue, rating);
+                    return {ratings: newData};
+                })
+            }
+            
+            // if new record- append to list
+            if(!this.state.ratings.some(e=>e.item_id=== this.state.currentTitleId)){
+                this.setState({
+                    ratings: [...this.state.ratings, rating]
+                });
+            }
         };
 
         if (this.state.loaderActive) return  <Loader />; // Conditional Rendering!
@@ -312,7 +328,7 @@ class Moviecard2 extends Component {
         return (
             <div>
                  {/* Progress bar component */ }
-                <ProgressBarComponent percentComplete={75} />
+                <ProgressBarComponent percentComplete={85} />
                 <br/>
 
 
@@ -345,11 +361,11 @@ class Moviecard2 extends Component {
 
 
                        {/* Recommended movies - Randomely graph or list */ }
-                    {this.state.listVis ? 
+                    {this.state.graphVis ? 
                          <div  >   
-                     <MovieGraph options = {this.state.optionsForGraph} series={this.state.seriesForGraph} handler={this.handleHover}/>
+                     <MovieGraph options = {this.state.optionsForGraph} series={this.state.seriesForGraph} />
                        </div>
-                        : (  <MovieSidePanel panelTitle="Recommened movies for you" movieList={this.state.movies.slice(0, 10)} handler={this.handleHover  }/> )}
+                        : (  <MovieSidePanel panelTitle="Recommened movies for you" movieList={this.state.recommendations} handler={this.handleHover} handlerOut={this.handleHoverStop }/> )}
                     
 
                     {/* Movie details - shown when mouse hover on a */ }
@@ -370,10 +386,10 @@ class Moviecard2 extends Component {
 
                                     <CardBody style={{maxHeight: '300px'}}>
                                     <CardText style={{color: 'black'}}>
-                                        <b>Coordinates: ({this.state.currentX},{this.state.currentY})</b>
+                                        <b>Rating: {this.state.activeMovie.movie_rating}</b>
                                     </CardText> 
-                                    <CardText style={{color: 'black' ,cursor: 'pointer'}}  onClick={() => this.handeClick(this.state.activeMovie.plot)}>
-                                        <b>Overview:</b> {this.state.activeMovie.plot.slice(0,100)} <p>... (click to see more)</p>
+                                    <CardText style={{color: 'black' ,cursor: 'pointer'}}  onClick={() => this.handeClick(this.state.activeMovie.plot,this.state.activeMovie.titleId)}>
+                                        <b>Overview:</b> {this.state.activeMovie.plot.slice(0,100)} <b>... (click to see more)</b>
                                     </CardText>
 
                                     <div>
@@ -423,9 +439,9 @@ class Moviecard2 extends Component {
 
                                     &nbsp;&nbsp;&nbsp;
 
-                                    <button ><img src="check.png" width="12px" height="12px"></img></button>
+                                    <button onClick={() => this.knowMovie(true)}><img src="check.png" width="12px" height="12px" alt=""></img></button>
                                         &nbsp;&nbsp;&nbsp;
-                                    <button><img src="cross .png" width="12px" height="12px"></img></button>
+                                    <button onClick={() => this.knowMovie(false)}><img src="cross.jpg" width="12px" height="12px" alt=""></img></button>
                                        
                                         
                                         

@@ -1,6 +1,5 @@
 import React, { Component } from 'react';
 import "react-step-progress-bar/styles.css";
-import { ProgressBar, Step } from "react-step-progress-bar";
 import ProgressBarComponent from "./progressBarComponent";
 
 class ExitPage extends Component {

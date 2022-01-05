@@ -32,8 +32,8 @@ class Welcome extends Component {
           <Card.Body>
             <Card.Title>What can you expect?</Card.Title>
             <p>
-              Dr. Mokryn and Dr. Knijnenburg invites you to take part in a research study. Dr. Knijnenburg is a professor at Clemson
-              University, and Dr. Mokryn is a professor at Haifa University.  This is a study that aims to test a new recommender system for movies. Your participation in
+              Dr. Mokryn and Dr. Knijnenburg invite you to take part in a research study. Dr. Mokryn is a professor at Haifa University and Dr. Knijnenburg is a professor at Clemson
+              University, This is a study that aims to test a new recommender system for movies. Your participation in
               this study will be valued.
             </p>
             <p>
@@ -41,7 +41,7 @@ class Welcome extends Component {
             </p>
             <ol>
               <li>Introduction</li>
-              <li>Complete personality test </li>
+              <li>Personality test </li>
               <li>Instructions for the study</li>
               <li>Interact with movie recommender</li>
               <li>Complete survey describing your experience</li>

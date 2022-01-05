@@ -9,7 +9,6 @@ import MovieGrid from "./movieGrid";
 import ProgressBarComponent from "../progressBarComponent";
 import Loader from '../loader';
 import 'react-circular-progressbar/dist/styles.css';
-import {APIACTION, Action} from "../constants";
 import axios from "axios";
 
 
@@ -17,10 +16,12 @@ class PrefPage extends Component {
     constructor(props) {
         super(props);
         this.handler = this.handler.bind(this);
-
+        this.rankedMovies = this.rankedMovies.bind(this);
 
         this.state = {
-
+            rankedMoviesArr: [], 
+            page: "Pref",
+            user: "connected user",
             timestamp: 0,
             loaderActive: true,
             stepsEnabled: true,
@@ -59,6 +60,7 @@ class PrefPage extends Component {
     this.setState({
         loaderActive: false,
         timestamp: Math.floor(Date.now() / 1000)
+        // user: user id
     });
     if (window.innerWidth < 700) {
         alert('Please increase window size for proper visualization!');
@@ -67,34 +69,37 @@ class PrefPage extends Component {
   }
 
   componentWillUnmount(){
-    // time in page
-    let page= "PrefPage";
-    let user = "connected user";
-    let movie = "";
-    let action = "time";
+    // time in page     
     let value = Math.floor(Date.now() / 1000)-this.state.timestamp;
-    console.log("page: " + page, ", user: " + user, ", movie: " + movie, ", action: " + action, ", value: " +value);
-    // TODO: save in mongo DB. 
-    this.timeInPageToMongo(page,user,movie,action,value);
+    this.timeInPageToMongo(this.state.page,this.state.user,"time",value);
 }
 
 // data will be sent from here -> router -> server -> mongo db
-timeInPageToMongo(cpage,cuser,cmovie,caction,cvalue) {
+timeInPageToMongo(cpage,cuser,caction,cvalue) {
 
     const newAction = {
+        rankedMoviesArr: [],
         page: cpage,
         user: cuser,
-        movie: cmovie,
         action: caction,
         value: cvalue
     }
    
     axios.post('http://localhost:5000/create', newAction)
-    
   }
 
+  rankedMovies(rankedMoviesArr_){
+      /*
+    for (let i=0;  i< rankedMoviesArr_.length; i++){
+        this.setState({ rankedMoviesArr: [...this.state.rankedMoviesArr, rankedMoviesArr_[i] ] })
+    }
+    */
 
-
+    this.setState({ rankedMoviesArr: [...this.state.rankedMoviesArr, rankedMoviesArr_[1] ] });
+   
+    console.log(rankedMoviesArr_);
+    console.log(this.state.rankedMoviesArr); // doesnt work check why!
+  }
   
   render() {  
 
@@ -124,7 +129,7 @@ timeInPageToMongo(cpage,cuser,cmovie,caction,cvalue) {
             <br/>
             <div className="row padding">
                 <div className="col-sm">
-                    <MovieGrid handler={this.handler}/>
+                    <MovieGrid handler={this.handler} rankedMovies={this.rankedMovies}/>
                 </div>
             </div>
 
@@ -135,7 +140,7 @@ timeInPageToMongo(cpage,cuser,cmovie,caction,cvalue) {
                     <span><i>of 20</i></span>
                     <span> </span>
                 </div>
-                <Link to="/movies">
+                <Link to={{ pathname: "/movies", state: {rankedMovies: this.state.rankedMoviesArr}   }}>
                     <Button disabled={disabled} variant="primary" style={{float:'right', marginRight: 90}}>Next</Button>
                 </Link>
             </div>

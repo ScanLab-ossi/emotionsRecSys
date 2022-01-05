@@ -2,15 +2,6 @@ import React from "react";
 
 //export const API = process.env.NODE_ENV === "production" ? "https://movie-mern.herokuapp.com/api/movies/"
 //	: "http://localhost:5000/api/movies/";
-
-
-function toBase64(arr) {
-	//arr = new Uint8Array(arr) if it's an ArrayBuffer
-	return btoa(
-	   arr.reduce((data, byte) => data + String.fromCharCode(byte), '')
-	);
- }
- 
  
 
 export const API =  "http://localhost:5000/api/movies/";
@@ -43,7 +34,6 @@ export const Action = props => (
 	<tr>
 		<td>{props.action.page}</td>
 		<td>{props.movie.user}</td>
-		<td>{props.movie.movie}</td>
 		<td>{props.movie.action}</td>
 		<td>{props.movie.value}</td>	
 	</tr>

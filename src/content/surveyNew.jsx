@@ -3,20 +3,49 @@ import "react-step-progress-bar/styles.css";
 import ProgressBarComponent from "./progressBarComponent";
 import "survey-react/survey.css";
 import * as Survey from "survey-react";
+import axios from "axios";
 
 class SurveyNew extends Component{
     constructor(props){
         super(props)
         this.state={
-
+            page: "Survey",
+            user: "connected user",
+            timestamp: 0
         }
         this.onCompleteComponent = this.onCompleteComponent.bind(this);
     }
 
-    onCompleteComponent=()=>{
+    onCompleteComponent=(survey, options)=>{
+        this.postToMongo(this.state.page,this.state.user,"surveyResults",survey.data);
         this.setState({
             isComplete: true
         })
+    }
+
+    componentDidMount(){
+        this.setState({
+            timestamp: Math.floor(Date.now() / 1000)
+            // user: user id 
+        });
+    }
+
+    componentWillUnmount(){
+        // time in page
+        let value = Math.floor(Date.now() / 1000)-this.state.timestamp;
+        this.postToMongo(this.state.page,this.state.user,"time",value);
+    }
+
+     // data will be sent from here -> router -> server -> mongo db
+     postToMongo(cpage,cuser,caction,cvalue) {
+
+        const newAction = {
+            page: cpage,
+            user: cuser,
+            action: caction,
+            value: cvalue
+        }
+        axios.post('http://localhost:5000/create', newAction);
     }
 
     render(){
@@ -323,53 +352,6 @@ class SurveyNew extends Component{
               "title": "Welcome to the post-task survey!Please rate your agreement with the statements about your experience with your LAST movie option.",
               "description": "   1: Strongly disagree, 2: Disagree, 3: Neither agree nor disagree, 4: Agree, 5: Strongly agree"
              },
-             {
-              "name": "page7",
-              "elements": [
-               {
-                "type": "text",
-                "name": "question38",
-                "title": "Joy",
-               },
-               {
-                "type": "text",
-                "name": "question39",
-                "title": "Trust"
-               },
-               {
-                "type": "text",
-                "name": "question40",
-                "title": "Fear"
-               },
-               {
-                "type": "text",
-                "name": "question41",
-                "title": "Surprise"
-               },
-               {
-                "type": "text",
-                "name": "question42",
-                "title": "Sadness"
-               },
-               {
-                "type": "text",
-                "name": "question43",
-                "title": "Disgust"
-               },
-               {
-                "type": "text",
-                "name": "question44",
-                "title": "Anger"
-               },
-               {
-                "type": "text",
-                "name": "question45",
-                "title": "Anticipation"
-               }
-              ],
-              "title": "Welcome to the post-task survey.",
-              "description": "Please write for each emotion below its meaning in your opinion"
-             }
             ],
             "triggers": [
              {
@@ -389,13 +371,12 @@ class SurveyNew extends Component{
            ) : null
            var onSurveyCompletion = this.state.isComplete ? (
                <div>Thanks for completing the survey!</div>
-               // TODO : connect with mongoDB
-               // TODO : check why triggers don't work
+           
            ) : null
            return(
                <div>
                   
-                  <ProgressBarComponent percentComplete={90} />
+                  <ProgressBarComponent percentComplete={95} />
                    &nbsp;&nbsp;&nbsp;
                     {surveyRender}
                     {onSurveyCompletion}
